@@ -1,0 +1,16 @@
+{
+  "name": "deepminer",
+  "version": "1.0.0",
+  "description": "deepminer",
+  "repository": "http://hackit.cc",
+  "main": "server.js",
+  "dependencies": {
+    "ws": "^3.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "evil7",
+  "license": "ISC"
+}

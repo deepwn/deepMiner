@@ -1,0 +1,184 @@
+/**
+ * deepMiner v1.1
+ * Idea from coinhive.com
+ * Worker for any pool or personal wallet
+ * By evil7@deePwn
+ */
+
+var http = require('http'),
+	WebSocket = require("ws"),
+	net = require('net'),
+	fs = require('fs');
+
+var banner = fs.readFileSync(__dirname + '/banner', 'utf8');
+var conf = fs.readFileSync(__dirname + '/config.json');
+conf = JSON.parse(conf);
+if (conf.domain === '' || conf.pool === '' || conf.addr === '') {
+	console.log(banner);
+	console.log('[!] NO config found? Let\'s install this now!\n\n');
+	console.log('[*] You can go fix this with write in file `config.json`.\n');
+	process.exit();
+} else {
+
+	//heroku port
+	conf.lport = process.env.PORT || conf.lport;
+	conf.domain = process.env.DOMAIN || conf.domain;
+
+	//HTTP srv
+	var web = http.createServer((req, res) => {
+		req.url = (req.url === '/') ? '/index.html' : req.url;
+		fs.readFile(__dirname + '/web' + req.url, (err, buf) => {
+			if (err) {
+				fs.readFile(__dirname + '/web/404.html', (err, buf) => {
+					res.end(buf);
+				});
+			} else {
+				if (!req.url.match(/\.wasm$/)) {
+					buf = buf.toString().replace(/%deepMiner_domain%/g, conf.domain);
+				}
+				res.end(buf);
+			}
+		});
+	});
+
+	// Miner Proxy Srv
+	var srv = new WebSocket.Server({
+		server: web,
+		path: "/proxy",
+		maxPayload: 1024
+	});
+	srv.on('connection', (ws) => {
+		var conn = {
+			uid: null,
+			workerId: null,
+			found: 0,
+			accepted: 0,
+			ws: ws,
+			pl: new net.Socket(),
+		}
+		var pool = conf.pool.split(':');
+		conn.pl.connect(pool[1], pool[0]);
+
+		// Trans WebSocket to PoolSocket
+		function ws2pool(data) {
+			var buf;
+			data = JSON.parse(data);
+			switch (data.type) {
+				case 'auth':
+					{
+						conn.uid = data.params.site_key;
+						if (data.params.user) {
+							conn.uid += '@' + data.params.user;
+						}
+						buf = {
+							"method": "login",
+							"params": {
+								"login": conf.addr,
+								"pass": conf.pass,
+								"agent": "deepMiner"
+							},
+							"id": 1
+						}
+						buf = JSON.stringify(buf) + '\n';
+						conn.pl.write(buf);
+						break;
+					}
+				case 'submit':
+					{
+						conn.found++;
+						buf = {
+							"method": "submit",
+							"params": {
+								"id": conn.workerId,
+								"job_id": data.params.job_id,
+								"nonce": data.params.nonce,
+								"result": data.params.result
+							},
+							"id": 1
+						}
+						buf = JSON.stringify(buf) + '\n';
+						conn.pl.write(buf);
+						break;
+					}
+			}
+		}
+
+		// Trans PoolSocket to WebSocket
+		function pool2ws(data) {
+			var buf;
+			data = JSON.parse(data);
+			if (data.id === 1) {
+				if (data.result.id) {
+					conn.workerId = data.result.id;
+					buf = {
+						"type": "authed",
+						"params": {
+							"token": "",
+							"hashes": conn.accepted
+						}
+					}
+					buf = JSON.stringify(buf);
+					conn.ws.send(buf);
+					buf = {
+						"type": 'job',
+						"params": data.result.job
+					}
+					buf = JSON.stringify(buf);
+					conn.ws.send(buf);
+				} else if (data.result.status === 'OK') {
+					conn.accepted++;
+					buf = {
+						"type": "hash_accepted",
+						"params": {
+							"hashes": conn.accepted
+						}
+					}
+					buf = JSON.stringify(buf);
+					conn.ws.send(buf);
+				}
+			}
+			if (data.method === 'job') {
+				buf = {
+					"type": 'job',
+					"params": data.params
+				}
+				buf = JSON.stringify(buf);
+				conn.ws.send(buf);
+			}
+		}
+		conn.ws.on('message', (data) => {
+			ws2pool(data);
+			console.log('[>] Request: ' + conn.uid + '\n\n' + data + '\n');
+		});
+		conn.ws.on('error', (data) => {
+			console.log('[!] ' + conn.uid + ' WebSocket ' + data + '\n');
+			conn.pl.destroy();
+		});
+		conn.ws.on('close', () => {
+			console.log('[!] ' + conn.uid + ' offline.\n');
+			conn.pl.destroy();
+		});
+		conn.pl.on('data', (data) => {
+			pool2ws(data);
+			console.log('[<] Response: ' + conn.uid + '\n\n' + data + '\n');
+		});
+		conn.pl.on('error', (data) => {
+			console.log('PoolSocket ' + data + '\n');
+			if (conn.ws.readyState !== 3) {
+				conn.ws.close();
+			}
+		});
+		conn.pl.on('close', () => {
+			console.log('PoolSocket Closed.\n');
+			if (conn.ws.readyState !== 3) {
+				conn.ws.close();
+			}
+		});
+	});
+	web.listen(conf.lport, conf.lhost, () => {
+		console.log(banner);
+		console.log(' Listen on : ' + conf.lhost + ':' + conf.lport + '\n Pool Host : ' + conf.pool + '\n Ur Wallet : ' + conf.addr + '\n');
+		console.log('----------------------------------------------------------------------------------------\n');
+
+	});
+}
