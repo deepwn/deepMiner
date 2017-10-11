@@ -47,8 +47,12 @@ echo 'server {' >> /etc/nginx/sites-available/deepMiner.conf
 echo 'listen 80;' >> /etc/nginx/sites-available/deepMiner.conf
 echo "server_name $domain;" >> /etc/nginx/sites-available/deepMiner.conf
 echo 'location / {' >> /etc/nginx/sites-available/deepMiner.conf
-echo 'proxy_set_header   X-Real-IP	$remote_addr;' >> /etc/nginx/sites-available/deepMiner.conf
+echo 'proxy_http_version 1.1;' >> /etc/nginx/sites-available/deepMiner.conf
 echo 'proxy_set_header   Host	$http_host;' >> /etc/nginx/sites-available/deepMiner.conf
+echo 'proxy_set_header   X-Real-IP $remote_addr;' >> /etc/nginx/sites-available/deepMiner.conf
+echo 'proxy_set_header   Upgrade $http_upgrade;' >> /etc/nginx/sites-available/deepMiner.conf
+echo 'proxy_set_header   Connection "upgrade";' >> /etc/nginx/sites-available/deepMiner.conf
+echo 'proxy_cache_bypass $http_upgrade;' >> /etc/nginx/sites-available/deepMiner.conf
 echo "proxy_pass         http://127.0.0.1:$lport;" >> /etc/nginx/sites-available/deepMiner.conf
 echo '}' >> /etc/nginx/sites-available/deepMiner.conf
 echo '}' >> /etc/nginx/sites-available/deepMiner.conf
