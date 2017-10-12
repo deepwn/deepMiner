@@ -38,7 +38,7 @@ forever start /srv/deepMiner/server.js
 
 sed -i '/forever start \/srv\/deepMiner\/server.js/d' /etc/rc.local
 sed -i '/exit 0/d' /etc/rc.local
-echo "forever start /srv/ghost/server.js" >> /etc/rc.local
+echo "forever start /srv/deepMiner/server.js" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 rm -rf /etc/nginx/sites-available/deepMiner.conf
