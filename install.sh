@@ -31,7 +31,7 @@ sed -i "s/pool.usxmrpool.com:2222/$pool/g" config.json
 sed -i "s/41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU/$addr/g" config.json
 sed -i "s/\"pass\": \"\"/\"pass\": \"$pass\"/g" config.json
 
-npm install
+npm update
 
 npm install -g forever
 forever start /srv/deepMiner/server.js
@@ -59,7 +59,7 @@ echo '}' >> /etc/nginx/sites-available/deepMiner.conf
 ln -s /etc/nginx/sites-available/deepMiner.conf /etc/nginx/sites-enabled/deepMiner.conf
 
 clear
-echo " >>> Serv : $domain:$lport"
+echo " >>> Serv : $domain (backend > 127.0.0.1:$lport)"
 echo " >>> Pool : $pool"
 echo " >>> Addr : $addr"
 echo ""
