@@ -147,6 +147,8 @@ srv.on('connection', (ws) => {
 					}
 				}
 			}
+			buf = JSON.stringify(buf);
+			conn.ws.send(buf);
 		}
 		if (data.method === 'job') {
 			buf = {
