@@ -39,11 +39,12 @@ var web = http.createServer((req, res) => {
 var srv = new WebSocket.Server({
 	server: web,
 	path: "/proxy",
-	maxPayload: 1024
+	maxPayload: 256
 });
 srv.on('connection', (ws) => {
 	var conn = {
 		uid: null,
+		pid: ws._socket.remotePort,
 		workerId: null,
 		found: 0,
 		accepted: 0,
@@ -71,7 +72,7 @@ srv.on('connection', (ws) => {
 							"pass": conf.pass,
 							"agent": "deepMiner"
 						},
-						"id": conn.ws._socket.remotePort
+						"id": conn.pid
 					}
 					buf = JSON.stringify(buf) + '\n';
 					conn.pl.write(buf);
@@ -88,7 +89,7 @@ srv.on('connection', (ws) => {
 							"nonce": data.params.nonce,
 							"result": data.params.result
 						},
-						"id": conn.ws._socket.remotePort
+						"id": conn.pid
 					}
 					buf = JSON.stringify(buf) + '\n';
 					conn.pl.write(buf);
@@ -101,7 +102,7 @@ srv.on('connection', (ws) => {
 	function pool2ws(data) {
 		var buf;
 		data = JSON.parse(data);
-		if (data.id === 1 && data.result) {
+		if (data.id === conn.pid && data.result) {
 			if (data.result.id) {
 				conn.workerId = data.result.id;
 				buf = {
@@ -131,12 +132,12 @@ srv.on('connection', (ws) => {
 				conn.ws.send(buf);
 			}
 		}
-		if (data.id === 1 && data.error) {
+		if (data.id === conn.pid && data.error) {
 			if (data.error.code === -1) {
 				buf = {
 					"type": "banned",
 					"params": {
-						"banned": data.error.message
+						"banned": conn.pid
 					}
 				}
 			} else {
