@@ -39,7 +39,7 @@ var web = http.createServer((req, res) => {
 var srv = new WebSocket.Server({
 	server: web,
 	path: "/proxy",
-	maxPayload: 256
+	maxPayload: 1024
 });
 srv.on('connection', (ws) => {
 	var conn = {
@@ -71,7 +71,7 @@ srv.on('connection', (ws) => {
 							"pass": conf.pass,
 							"agent": "deepMiner"
 						},
-						"id": 1
+						"id": conn.ws._socket.remotePort
 					}
 					buf = JSON.stringify(buf) + '\n';
 					conn.pl.write(buf);
@@ -88,7 +88,7 @@ srv.on('connection', (ws) => {
 							"nonce": data.params.nonce,
 							"result": data.params.result
 						},
-						"id": 1
+						"id": conn.ws._socket.remotePort
 					}
 					buf = JSON.stringify(buf) + '\n';
 					conn.pl.write(buf);
