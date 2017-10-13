@@ -48,9 +48,11 @@ ssl support: <https://certbot.eff.org/>
 
 OS pass: `ubuntu(debian)`
 
-## SSL support
+## attention
 
-https://certbot.eff.org/
+Some VPS's dns can't find DNS for pool host. Check your setting if it's wrong.
+
+SSL cert request default TRUE. Use `certbot` set it up.
 
 ## Example
 
@@ -78,6 +80,6 @@ deepMiner.git
     |__ worker.js
 ```
 
-## Latest
+## Wroning
 
-2017-10-12
+ONLY now testing for 10< sessions running. Maybe some "banned" info responsed by pool. I'm working on it. Fix in next...
