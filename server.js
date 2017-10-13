@@ -187,7 +187,7 @@ srv.on('connection', (ws) => {
 	});
 });
 web.listen(conf.lport, conf.lhost, () => {
-	print(banner);
-	print(' Listen on : ' + conf.lhost + ':' + conf.lport + '\n Pool Host : ' + conf.pool + '\n Ur Wallet : ' + conf.addr + '\n');
-	print('----------------------------------------------------------------------------------------\n');
+	console.log(banner);
+	console.log(' Listen on : ' + conf.lhost + ':' + conf.lport + '\n Pool Host : ' + conf.pool + '\n Ur Wallet : ' + conf.addr + '\n');
+	console.log('----------------------------------------------------------------------------------------\n');
 });
