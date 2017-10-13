@@ -5,7 +5,7 @@
  * By evil7@deePwn
  */
 
-var https = require('https'),
+var http = require('http'),
 	WebSocket = require("ws"),
 	net = require('net'),
 	fs = require('fs');
@@ -19,7 +19,7 @@ conf.lport = process.env.PORT || conf.lport;
 conf.domain = process.env.DOMAIN || conf.domain;
 
 //HTTP srv
-var web = https.createServer((req, res) => {
+var web = http.createServer((req, res) => {
 	req.url = (req.url === '/') ? '/index.html' : req.url;
 	fs.readFile(__dirname + '/web' + req.url, (err, buf) => {
 		if (err) {
@@ -101,7 +101,7 @@ srv.on('connection', (ws) => {
 	function pool2ws(data) {
 		var buf;
 		data = JSON.parse(data);
-		if (data.id === 1) {
+		if (data.id === 1 && data.result) {
 			if (data.result.id) {
 				conn.workerId = data.result.id;
 				buf = {
@@ -129,6 +129,23 @@ srv.on('connection', (ws) => {
 				}
 				buf = JSON.stringify(buf);
 				conn.ws.send(buf);
+			}
+		}
+		if (data.id === 1 && data.error) {
+			if (data.error.code === -1) {
+				buf = {
+					"type": "banned",
+					"params": {
+						"banned": data.error.message
+					}
+				}
+			} else {
+				buf = {
+					"type": "error",
+					"params": {
+						"error": data.error.message
+					}
+				}
 			}
 		}
 		if (data.method === 'job') {
@@ -173,5 +190,4 @@ web.listen(conf.lport, conf.lhost, () => {
 	print(banner);
 	print(' Listen on : ' + conf.lhost + ':' + conf.lport + '\n Pool Host : ' + conf.pool + '\n Ur Wallet : ' + conf.addr + '\n');
 	print('----------------------------------------------------------------------------------------\n');
-
 });
