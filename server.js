@@ -44,7 +44,7 @@ var srv = new WebSocket.Server({
 srv.on('connection', (ws) => {
 	var conn = {
 		uid: null,
-		pid: ws._socket.remotePort,
+		pid: new Date().getTime(),
 		workerId: null,
 		found: 0,
 		accepted: 0,
