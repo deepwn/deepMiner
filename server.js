@@ -161,7 +161,7 @@ srv.on('connection', (ws) => {
 	}
 	conn.ws.on('message', (data) => {
 		ws2pool(data);
-		console.log('[>] Request: ' + conn.uid + '\n\n' + ws2pool(data) + '\n');
+		console.log('[>] Request: ' + conn.uid + '\n\n' + data + '\n');
 	});
 	conn.ws.on('error', (data) => {
 		console.log('[!] ' + conn.uid + ' WebSocket ' + data + '\n');
