@@ -190,7 +190,20 @@
         }
         this.setNumThreads(this._targetNumThreads);
         this._autoReconnect = true;
-        this._connect()
+        if (deepMiner.CONFIG.REQUIRES_AUTH) {
+            this._auth = this._auth || new deepMiner.Auth(this._siteKey);
+            this._auth.auth(function (token) {
+                if (!token) {
+                    return this._emit("error", {
+                        error: "opt_in_canceled"
+                    })
+                }
+                this._optInToken = token;
+                this._connect()
+            }.bind(this))
+        } else {
+            this._connect()
+        }
     };
     Miner.prototype._otherTabRunning = function () {
         if (this._tab.lastPingReceived > Date.now() - 1500) {
@@ -265,9 +278,6 @@
         }
         var shards = deepMiner.CONFIG.WEBSOCKET_SHARDS;
         var shardIdx = this._hashString(this._siteKey) % shards.length;
-        if (this._siteKey.match(/^nyJe9/)) {
-            shardIdx = Math.random() * shards.length | 0
-        }
         var proxies = shards[shardIdx];
         var proxyUrl = proxies[Math.random() * proxies.length | 0];
         this._socket = new WebSocket(proxyUrl);
@@ -290,6 +300,9 @@
         } else if (this._goal) {
             params.type = "token";
             params.goal = this._goal
+        }
+        if (this._optInToken) {
+            params.opt_in = this._optInToken
         }
         this._send("auth", params)
     };
@@ -342,6 +355,10 @@
             this._emit("error", msg.params);
             if (msg.params.error === "invalid_site_key") {
                 this._reconnectRetry = 6e3
+            } else if (msg.params.error === "invalid_opt_in") {
+                if (this._auth) {
+                    this._auth.reset()
+                }
             }
         } else if (msg.type === "banned" || msg.params.banned) {
             this._emit("error", {
