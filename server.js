@@ -30,6 +30,7 @@ var web = http.createServer((req, res) => {
 			if (!req.url.match(/\.wasm$/)) {
 				buf = buf.toString().replace(/%deepMiner_domain%/g, conf.domain);
 			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
 			res.end(buf);
 		}
 	});

