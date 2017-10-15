@@ -20,6 +20,7 @@ conf.domain = process.env.DOMAIN || conf.domain;
 
 //HTTP srv
 var web = http.createServer((req, res) => {
+	res.setHeader('Access-Control-Allow-Origin', '*');
 	req.url = (req.url === '/') ? '/index.html' : req.url;
 	fs.readFile(__dirname + '/web' + req.url, (err, buf) => {
 		if (err) {
