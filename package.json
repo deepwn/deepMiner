@@ -12,5 +12,5 @@
     "start": "node server.js"
   },
   "author": "evil7",
-  "license": "ISC"
+  "license": "MIT"
 }
