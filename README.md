@@ -1,7 +1,6 @@
 # deepMiner
 
 ```acsii
-
 :::::::-.  .,:::::: .,::::::::::::::::. .        :   ::::::.    :::..,:::::: :::::::..
  ;;,   `';,;;;;'''' ;;;;'''' `;;;```.;;;;;,.    ;;;  ;;;`;;;;,  `;;;;;;;'''' ;;;;``;;;;
  `[[     [[ [[cccc   [[cccc   `]]nnn]]' [[[[, ,[[[[, [[[  [[[[[. '[[ [[cccc   [[[,/[[['
@@ -14,7 +13,6 @@
   By evil7@deePwn
 
 ----------------------------------------------------------------------------------------
-
 ```
 
 ## Usage
@@ -51,7 +49,7 @@ Just go `/srv/deepMiner` and run `git pull`
 
 DON'T forget backup your `config.json` !!!
 
-## attention
+## Attention
 
 Some VPS's default DNS can't find IP for the pool. Check your DNS setting if it's wrong.
 
@@ -83,6 +81,10 @@ deepMiner.git
     |   |__ cryptonight.wasm
     |__ worker.js
 ```
+
+## License
+
+MIT <https://raw.githubusercontent.com/deepwn/deepMiner/master/LICENSE>
 
 ## Missions
 
