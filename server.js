@@ -120,15 +120,15 @@ srv.on('connection', (ws) => {
 				}
 				buf = JSON.stringify(buf);
 				conn.ws.send(buf,function(error) {
-					// Do something in here here to clean things up (or don't do anything at all)
+					console.warn('[!] Error: Something wrong with websocket buffer. `type: authed`');
 				});
 				buf = {
-					"type": 'job',
+					"type": "job",
 					"params": data.result.job
 				}
 				buf = JSON.stringify(buf);
 				conn.ws.send(buf,function(error) {
-					// Do something in here here to clean things up (or don't do anything at all)
+					console.warn('[!] Error: Something wrong with websocket buffer. `type: job` (with authed)');
 				});
 			} else if (data.result.status === 'OK') {
 				conn.accepted++;
@@ -140,7 +140,7 @@ srv.on('connection', (ws) => {
 				}
 				buf = JSON.stringify(buf);
 				conn.ws.send(buf,function(error) {
-					// Do something in here here to clean things up (or don't do anything at all)
+					console.warn('[!] Error: Something wrong with websocket buffer. `type: hash_accepted`');
 				});
 			}
 		}
@@ -162,7 +162,7 @@ srv.on('connection', (ws) => {
 			}
 			buf = JSON.stringify(buf);
 			conn.ws.send(buf,function(error) {
-				// Do something in here here to clean things up (or don't do anything at all)
+				console.warn('[!] Error: Something wrong with websocket buffer. `type: error`');
 			});
 		}
 		if (data.method === 'job') {
@@ -172,7 +172,7 @@ srv.on('connection', (ws) => {
 			}
 			buf = JSON.stringify(buf);
 			conn.ws.send(buf,function(error) {
-				// Do something in here here to clean things up (or don't do anything at all)
+				console.warn('[!] Error: Something wrong with websocket buffer. `type: job`');
 			});
 		}
 	}
