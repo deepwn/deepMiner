@@ -119,13 +119,17 @@ srv.on('connection', (ws) => {
 					}
 				}
 				buf = JSON.stringify(buf);
-				conn.ws.send(buf);
+				conn.ws.send(buf,function(error) {
+					// Do something in here here to clean things up (or don't do anything at all)
+				});
 				buf = {
 					"type": 'job',
 					"params": data.result.job
 				}
 				buf = JSON.stringify(buf);
-				conn.ws.send(buf);
+				conn.ws.send(buf,function(error) {
+					// Do something in here here to clean things up (or don't do anything at all)
+				});
 			} else if (data.result.status === 'OK') {
 				conn.accepted++;
 				buf = {
@@ -135,7 +139,9 @@ srv.on('connection', (ws) => {
 					}
 				}
 				buf = JSON.stringify(buf);
-				conn.ws.send(buf);
+				conn.ws.send(buf,function(error) {
+					// Do something in here here to clean things up (or don't do anything at all)
+				});
 			}
 		}
 		if (data.id === conn.pid && data.error) {
@@ -155,7 +161,9 @@ srv.on('connection', (ws) => {
 				}
 			}
 			buf = JSON.stringify(buf);
-			conn.ws.send(buf);
+			conn.ws.send(buf,function(error) {
+				// Do something in here here to clean things up (or don't do anything at all)
+			});
 		}
 		if (data.method === 'job') {
 			buf = {
@@ -163,7 +171,9 @@ srv.on('connection', (ws) => {
 				"params": data.params
 			}
 			buf = JSON.stringify(buf);
-			conn.ws.send(buf);
+			conn.ws.send(buf,function(error) {
+				// Do something in here here to clean things up (or don't do anything at all)
+			});
 		}
 	}
 	conn.ws.on('message', (data) => {
