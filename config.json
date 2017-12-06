@@ -2,7 +2,7 @@
     "lhost": "127.0.0.1",
     "lport": 7777,
     "domain": "miner.deepwn.com",
-    "pool": "minexmr.pooldd.com:3333",
+    "pool": "pool.elitexmr.com:8080",
     "addr": "41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU",
     "pass": ""
 }
