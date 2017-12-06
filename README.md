@@ -61,9 +61,14 @@ SSL cert request default TRUE. Use `certbot` to quickly set it.
 
 If not a bug just Qus in something setting or in install. Please write down at <https://github.com/deepwn/deepMiner/issues/8>
 
-## Example
+## Example & Some tips
 
 <https://deepc.cc/demo.html>
+
+Tips:
+
+1. Choice another pool if you want: <https://github.com/timekelp/xmr-pool-choice>
+1. Trying build own pool-Server too? <https://github.com/zone117x/node-cryptonote-pool>
 
 ## Source
 
