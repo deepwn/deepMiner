@@ -1,6 +1,6 @@
 read -p "[1] Listen Port (7777) > " lport
 read -p "[2] Your Domain (localhost) > " domain
-read -p "[3] Pool Host&Port (minexmr.pooldd.com:3333) > " pool
+read -p "[3] Pool Host&Port (pool.elitexmr.com:8080) > " pool
 read -p "[4] Your XMR wallet (important!!!) > " addr
 if [ ! -n "$lport" ];then
     lport="7777"
@@ -9,7 +9,7 @@ if [ ! -n "$domain" ];then
     domain="localhost"
 fi
 if [ ! -n "$pool" ];then
-    pool="minexmr.pooldd.com:3333"
+    pool="pool.elitexmr.com:8080"
 fi
 while  [ ! -n "$addr" ];do
     read -p "Plesae set XMR wallet address!!! > " addr
@@ -24,7 +24,7 @@ git clone https://github.com/deepwn/deepMiner.git -o deepMiner
 cd deepMiner
 sed -i "s/7777/$lport/g" config.json
 sed -i "s/miner.deepwn.com/$domain/g" config.json
-sed -i "s/minexmr.pooldd.com:3333/$pool/g" config.json
+sed -i "s/pool.elitexmr.com:8080/$pool/g" config.json
 sed -i "s/41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU/$addr/g" config.json
 sed -i "s/\"pass\": \"\"/\"pass\": \"$pass\"/g" config.json
 npm update
