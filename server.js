@@ -6,20 +6,24 @@
  * improved by vphelipe
  */
 var http = require('http'),
+    https = require('https'),
     WebSocket = require("ws"),
     net = require('net'),
-    fs = require('fs');
+    fs = require('fs'),
+    crypto = require("crypto");
 
 var banner = fs.readFileSync(__dirname + '/banner', 'utf8');
 var conf = fs.readFileSync(__dirname + '/config.json', 'utf8');
 conf = JSON.parse(conf);
 
+//ssl support
+const ssl = !!(conf.key && conf.cert);
+
 //heroku port
 conf.lport = process.env.PORT || conf.lport;
 conf.domain = process.env.DOMAIN || conf.domain;
 
-//HTTP srv
-var web = http.createServer((req, res) => {
+const stats = (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     req.url = (req.url === '/') ? '/index.html' : req.url;
     fs.readFile(__dirname + '/web' + req.url, (err, buf) => {
@@ -39,7 +43,17 @@ var web = http.createServer((req, res) => {
             res.end(buf);
         }
     });
-});
+}
+
+//ssl support
+if (ssl) {
+    var web = https.createServer({
+        key: fs.readFileSync(conf.key),
+        cert: fs.readFileSync(conf.cert)
+    }, stats)
+} else {
+    var web = http.createServer(stats);
+}
 
 // Miner Proxy Srv
 var srv = new WebSocket.Server({
@@ -50,7 +64,7 @@ var srv = new WebSocket.Server({
 srv.on('connection', (ws) => {
     var conn = {
         uid: null,
-        pid: new Date().getTime(),
+        pid: crypto.randomBytes(12).toString("hex"),
         workerId: null,
         found: 0,
         accepted: 0,
@@ -106,75 +120,67 @@ srv.on('connection', (ws) => {
 
     // Trans PoolSocket to WebSocket
     function pool2ws(data) {
-        var buf;
-        data = JSON.parse(data);
-        if (data.id === conn.pid && data.result) {
-            if (data.result.id) {
-                conn.workerId = data.result.id;
-                buf = {
-                    "type": "authed",
-                    "params": {
-                        "token": "",
-                        "hashes": conn.accepted
+        try {
+            var buf;
+            data = JSON.parse(data);
+            if (data.id === conn.pid && data.result) {
+                if (data.result.id) {
+                    conn.workerId = data.result.id;
+                    buf = {
+                        "type": "authed",
+                        "params": {
+                            "token": "",
+                            "hashes": conn.accepted
+                        }
+                    }
+                    buf = JSON.stringify(buf);
+                    conn.ws.send(buf);
+                    buf = {
+                        "type": "job",
+                        "params": data.result.job
+                    }
+                    buf = JSON.stringify(buf);
+                    conn.ws.send(buf);
+                } else if (data.result.status === 'OK') {
+                    conn.accepted++;
+                    buf = {
+                        "type": "hash_accepted",
+                        "params": {
+                            "hashes": conn.accepted
+                        }
+                    }
+                    buf = JSON.stringify(buf);
+                    conn.ws.send(buf);
+                }
+            }
+            if (data.id === conn.pid && data.error) {
+                if (data.error.code === -1) {
+                    buf = {
+                        "type": "banned",
+                        "params": {
+                            "banned": conn.pid
+                        }
+                    }
+                } else {
+                    buf = {
+                        "type": "error",
+                        "params": {
+                            "error": data.error.message
+                        }
                     }
                 }
                 buf = JSON.stringify(buf);
-                conn.ws.send(buf, function(error) {
-                    console.warn('[!] Error: Something wrong with websocket buffer. `type: authed`');
-                });
+                conn.ws.send(buf);
+            }
+            if (data.method === 'job') {
                 buf = {
-                    "type": "job",
-                    "params": data.result.job
+                    "type": 'job',
+                    "params": data.params
                 }
                 buf = JSON.stringify(buf);
-                conn.ws.send(buf, function(error) {
-                    console.warn('[!] Error: Something wrong with websocket buffer. `type: job` (with authed)');
-                });
-            } else if (data.result.status === 'OK') {
-                conn.accepted++;
-                buf = {
-                    "type": "hash_accepted",
-                    "params": {
-                        "hashes": conn.accepted
-                    }
-                }
-                buf = JSON.stringify(buf);
-                conn.ws.send(buf, function(error) {
-                    console.warn('[!] Error: Something wrong with websocket buffer. `type: hash_accepted`');
-                });
+                conn.ws.send(buf);
             }
-        }
-        if (data.id === conn.pid && data.error) {
-            if (data.error.code === -1) {
-                buf = {
-                    "type": "banned",
-                    "params": {
-                        "banned": conn.pid
-                    }
-                }
-            } else {
-                buf = {
-                    "type": "error",
-                    "params": {
-                        "error": data.error.message
-                    }
-                }
-            }
-            buf = JSON.stringify(buf);
-            conn.ws.send(buf, function(error) {
-                console.warn('[!] Error: Something wrong with websocket buffer. `type: error`');
-            });
-        }
-        if (data.method === 'job') {
-            buf = {
-                "type": 'job',
-                "params": data.params
-            }
-            buf = JSON.stringify(buf);
-            conn.ws.send(buf, function(error) {
-                console.warn('[!] Error: Something wrong with websocket buffer. `type: job`');
-            });
-        }
+        } catch (error) { console.warn('[!] Error: '+error.message) }
     }
     conn.ws.on('message', (data) => {
         ws2pool(data);
@@ -197,7 +203,7 @@ srv.on('connection', (ws) => {
             pool2ws(lines[0]);
             pool2ws(lines[1]);
         } else {
-            console.log('[<] Response: ' + conn.pid + '\n\n' + lines[1] + '\n');
+            console.log('[<] Response: ' + conn.pid + '\n\n' + data + '\n');
             pool2ws(data);
         }
     });
