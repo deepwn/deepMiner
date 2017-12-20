@@ -1,11 +1,11 @@
 {
   "name": "deepminer",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "deepminer",
-  "repository": "http://hackit.cc",
+  "repository": "https://github.com/deepwn/deepMiner",
   "main": "server.js",
   "dependencies": {
-    "ws": "^3.2.0"
+    "ws": "^3.3.3"
   },
   "devDependencies": {},
   "scripts": {

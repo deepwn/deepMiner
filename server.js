@@ -38,7 +38,7 @@ const stats = (req, res) => {
                     res.setHeader('content-type', 'application/javascript');
                 }
             } else {
-                res.setHeader('Content-Type', 'application/octet-stream');
+                res.setHeader('Content-Type', 'application/wasm');
             }
             res.end(buf);
         }
