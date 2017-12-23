@@ -23,12 +23,13 @@ rm -rf deepMiner
 git clone https://github.com/deepwn/deepMiner.git -o deepMiner
 cd deepMiner
 sed -i "s/7777/$lport/g" config.json
-sed -i "s/miner.deepwn.com/$domain/g" config.json
+sed -i "s/digxmr.com/$domain/g" config.json
 sed -i "s/pool.elitexmr.com:8080/$pool/g" config.json
 sed -i "s/41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU/$addr/g" config.json
 sed -i "s/\"pass\": \"\"/\"pass\": \"$pass\"/g" config.json
 npm update
 npm install -g forever
+forever stopall
 forever start /srv/deepMiner/server.js
 sed -i '/forever start \/srv\/deepMiner\/server.js/d' /etc/rc.local
 sed -i '/exit 0/d' /etc/rc.local
