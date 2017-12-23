@@ -5,6 +5,7 @@
 
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
+var fs = require('fs'),
 var banner = fs.readFileSync(__dirname + '/banner', 'utf8');
 var conf = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 
