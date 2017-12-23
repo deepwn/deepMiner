@@ -31,9 +31,9 @@ npm update
 npm install -g forever
 forever stopall
 forever start /srv/deepMiner/server.js
-sed -i '/forever start \/srv\/deepMiner\/server.js/d' /etc/rc.local
+sed -i '/forever start \/srv\/deepMiner\/cluster.js/d' /etc/rc.local
 sed -i '/exit 0/d' /etc/rc.local
-echo "forever start /srv/deepMiner/server.js" >> /etc/rc.local
+echo "forever start /srv/deepMiner/cluster.js" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 rm -rf /etc/nginx/sites-available/deepMiner.conf
 rm -rf /etc/nginx/sites-enabled/deepMiner.conf

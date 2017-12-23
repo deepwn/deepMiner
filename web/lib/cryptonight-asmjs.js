@@ -1,9 +1,7 @@
 self.deepMiner = self.deepMiner || {};
 self.deepMiner.CONFIG = {
     LIB_URL: "https://%deepMiner_domain%/lib/",
-    WEBSOCKET_SHARDS: [
-        ["wss://%deepMiner_domain%/api"]
-    ],
+    WEBSOCKET_SHARDS: [["wss://%deepMiner_domain%/proxy"]],
     ASMJS_NAME: "cryptonight-asmjs.min.js",
     REQUIRES_AUTH: false
 };
@@ -4426,7 +4424,7 @@ var FS = {
                 getRequest.onerror = function getRequest_onerror() {
                     fail++;
                     if (ok + fail == total) finish()
-                }
+}
             }));
             transaction.onerror = onerror
         };
@@ -4978,8 +4976,8 @@ var asm = (function (global, env, buffer) {
         a = a | 0;
         Ya(a + 2097536 | 0) | 0;
         $a(a);
-        return
-    }
+            return
+        }
 
     function ya(b, d, e, f) {
         b = b | 0;
@@ -5062,7 +5060,7 @@ var asm = (function (global, env, buffer) {
                 a[f >> 0] = a[g >> 0] | 0;
                 f = f + 1 | 0;
                 g = g + 1 | 0
-            } while ((f | 0) < (h | 0));
+                    } while ((f | 0) < (h | 0));
             d = d + 128 | 0
         } while (d >>> 0 < 2097152);
         n = b + 2097184 | 0;
@@ -5098,7 +5096,7 @@ var asm = (function (global, env, buffer) {
         h = b + 2097520 | 0;
         i = b + 2097528 | 0;
         d = 0;
-        while (1) {
+                        while (1) {
             H = b + (f & 2097136) | 0;
             Ca(H, h, j);
             f = h;
@@ -5186,11 +5184,11 @@ var asm = (function (global, env, buffer) {
         f = x;
         g = z;
         h = f + 128 | 0;
-        do {
-            c[f >> 2] = c[g >> 2];
-            f = f + 4 | 0;
-            g = g + 4 | 0
-        } while ((f | 0) < (h | 0));
+                            do {
+                                c[f >> 2] = c[g >> 2];
+                                f = f + 4 | 0;
+                                g = g + 4 | 0
+                            } while ((f | 0) < (h | 0));
         Va(c[o >> 2] | 0, n, 32) | 0;
         f = b + 2097368 | 0;
         g = b + 2097384 | 0;
@@ -5201,7 +5199,7 @@ var asm = (function (global, env, buffer) {
         m = b + 2097464 | 0;
         n = b + 2097480 | 0;
         d = 0;
-        do {
+                        do {
             H = b + d | 0;
             G = H;
             J = x;
@@ -5318,25 +5316,25 @@ var asm = (function (global, env, buffer) {
         } while (d >>> 0 < 2097152);
         f = z;
         g = x;
-        h = f + 128 | 0;
-        do {
-            c[f >> 2] = c[g >> 2];
-            f = f + 4 | 0;
-            g = g + 4 | 0
-        } while ((f | 0) < (h | 0));
+                            h = f + 128 | 0;
+                            do {
+                                c[f >> 2] = c[g >> 2];
+                                f = f + 4 | 0;
+                                g = g + 4 | 0
+                            } while ((f | 0) < (h | 0));
         Oa(B, 24);
         na[c[4688 + ((a[B >> 0] & 3 & 255) << 2) >> 2] & 7](B, 200, e);
         l = C;
-        return
-    }
+                    return
+                }
 
     function za(a, b, c) {
         a = a | 0;
         b = b | 0;
         c = c | 0;
         Ha(c, a, b, 0);
-        return
-    }
+                    return
+                }
 
     function Aa(a, b, c) {
         a = a | 0;
@@ -5344,7 +5342,7 @@ var asm = (function (global, env, buffer) {
         c = c | 0;
         if (!(Ma(256, a, b << 3, 0, c) | 0)) return;
         else ia(7380, 7395, 43, 7425)
-    }
+        }
 
     function Ba(a, b, c) {
         a = a | 0;
@@ -5733,7 +5731,7 @@ var asm = (function (global, env, buffer) {
                 if (!h) {
                     h = a + 52 | 0;
                     c[h >> 2] = (c[h >> 2] | 0) + 1
-                }
+            }
                 Ea(a, a + 64 | 0);
                 h = f << 3;
                 h = vb(d | 0, e | 0, h | 0, ((h | 0) < 0) << 31 >> 31 | 0) | 0;
@@ -8608,10 +8606,10 @@ var asm = (function (global, env, buffer) {
         f = h;
         g = f;
         d = g + 76 | 0;
-        do {
+            do {
             a[g >> 0] = a[b >> 0] | 0;
             g = g + 1 | 0;
-            b = b + 1 | 0
+                b = b + 1 | 0
         } while ((g | 0) < (d | 0));
         g = f + 80 | 0;
         d = g + 120 | 0;
@@ -9078,156 +9076,156 @@ var asm = (function (global, env, buffer) {
                                 e = 1
                         }
                         while (0);
-                    if ((m | 0) == 94) {
-                        e = s + 24 | 0;
-                        q = e;
-                        r = c[q + 4 >> 2] | 8388608;
-                        c[e >> 2] = c[q >> 2];
-                        c[e + 4 >> 2] = r;
-                        e = 0
-                    }
+                        if ((m | 0) == 94) {
+                            e = s + 24 | 0;
+                            q = e;
+                            r = c[q + 4 >> 2] | 8388608;
+                            c[e >> 2] = c[q >> 2];
+                            c[e + 4 >> 2] = r;
+                            e = 0
+                        }
                 }
             while (0);
-        switch ((c[s >> 2] | 0) >>> 8 & 3) {
-            case 2:
-                {
-                    f = s + 8 | 0;n = s + 24 | 0;r = n;h = c[r + 4 >> 2] | -2147483648;o = n;c[o >> 2] = c[r >> 2];c[o + 4 >> 2] = h;o = s + 12 | 0;h = c[o >> 2] | 0;
-                    if (h >>> 0 < 64) xb(f + 88 + h | 0, 0, 64 - h | 0) | 0;p = s + 96 | 0;Ra(f, p, 1, h);k = ((c[f >> 2] | 0) + 7 | 0) >>> 3;q = p;r = q + 64 | 0;do {
-                        c[q >> 2] = 0;
-                        q = q + 4 | 0
-                    } while ((q | 0) < (r | 0));m = s + 32 | 0;q = t;h = m;r = q + 64 | 0;do {
-                        c[q >> 2] = c[h >> 2];
-                        q = q + 4 | 0;
-                        h = h + 4 | 0
-                    } while ((q | 0) < (r | 0));
-                    if (k | 0) {
-                        j = s + 16 | 0;
-                        b = (k + -1 | 0) >>> 6;
-                        i = 0;
-                        h = 0;
-                        while (1) {
-                            q = p;
-                            c[q >> 2] = i;
-                            c[q + 4 >> 2] = 0;
-                            q = j;
+            switch ((c[s >> 2] | 0) >>> 8 & 3) {
+                case 2:
+                    {
+                        f = s + 8 | 0;n = s + 24 | 0;r = n;h = c[r + 4 >> 2] | -2147483648;o = n;c[o >> 2] = c[r >> 2];c[o + 4 >> 2] = h;o = s + 12 | 0;h = c[o >> 2] | 0;
+                        if (h >>> 0 < 64) xb(f + 88 + h | 0, 0, 64 - h | 0) | 0;p = s + 96 | 0;Ra(f, p, 1, h);k = ((c[f >> 2] | 0) + 7 | 0) >>> 3;q = p;r = q + 64 | 0;do {
                             c[q >> 2] = 0;
-                            c[q + 4 >> 2] = 0;
-                            q = n;
-                            c[q >> 2] = 0;
-                            c[q + 4 >> 2] = -16777216;
-                            c[o >> 2] = 0;
-                            Ra(f, p, 1, 8);
-                            q = k - h | 0;
-                            Db(g + h | 0, m | 0, (q >>> 0 < 64 ? q : 64) | 0) | 0;
-                            q = m;
-                            h = t;
-                            r = q + 64 | 0;
-                            do {
-                                c[q >> 2] = c[h >> 2];
-                                q = q + 4 | 0;
-                                h = h + 4 | 0
-                            } while ((q | 0) < (r | 0));
-                            h = i + 1 | 0;
-                            if ((i | 0) == (b | 0)) break;
-                            else {
-                                i = h;
-                                h = h << 6
+                            q = q + 4 | 0
+                        } while ((q | 0) < (r | 0));m = s + 32 | 0;q = t;h = m;r = q + 64 | 0;do {
+                            c[q >> 2] = c[h >> 2];
+                            q = q + 4 | 0;
+                            h = h + 4 | 0
+                        } while ((q | 0) < (r | 0));
+                        if (k | 0) {
+                            j = s + 16 | 0;
+                            b = (k + -1 | 0) >>> 6;
+                            i = 0;
+                            h = 0;
+                            while (1) {
+                                q = p;
+                                c[q >> 2] = i;
+                                c[q + 4 >> 2] = 0;
+                                q = j;
+                                c[q >> 2] = 0;
+                                c[q + 4 >> 2] = 0;
+                                q = n;
+                                c[q >> 2] = 0;
+                                c[q + 4 >> 2] = -16777216;
+                                c[o >> 2] = 0;
+                                Ra(f, p, 1, 8);
+                                q = k - h | 0;
+                                Db(g + h | 0, m | 0, (q >>> 0 < 64 ? q : 64) | 0) | 0;
+                                q = m;
+                                h = t;
+                                r = q + 64 | 0;
+                                do {
+                                    c[q >> 2] = c[h >> 2];
+                                    q = q + 4 | 0;
+                                    h = h + 4 | 0
+                                } while ((q | 0) < (r | 0));
+                                h = i + 1 | 0;
+                                if ((i | 0) == (b | 0)) break;
+                                else {
+                                    i = h;
+                                    h = h << 6
+                                }
                             }
                         }
+                        l = u;
+                        return e | 0
                     }
-                    l = u;
-                    return e | 0
-                }
-            case 1:
-                {
-                    k = s + 8 | 0;m = s + 24 | 0;r = m;h = c[r + 4 >> 2] | -2147483648;f = m;c[f >> 2] = c[r >> 2];c[f + 4 >> 2] = h;f = s + 12 | 0;h = c[f >> 2] | 0;
-                    if (h >>> 0 < 32) xb(k + 56 + h | 0, 0, 32 - h | 0) | 0;n = s + 64 | 0;Ta(k, n, 1, h);j = ((c[k >> 2] | 0) + 7 | 0) >>> 3;c[n >> 2] = 0;c[n + 4 >> 2] = 0;c[n + 8 >> 2] = 0;c[n + 12 >> 2] = 0;c[n + 16 >> 2] = 0;c[n + 20 >> 2] = 0;c[n + 24 >> 2] = 0;c[n + 28 >> 2] = 0;b = s + 32 | 0;c[t >> 2] = c[b >> 2];c[t + 4 >> 2] = c[b + 4 >> 2];c[t + 8 >> 2] = c[b + 8 >> 2];c[t + 12 >> 2] = c[b + 12 >> 2];c[t + 16 >> 2] = c[b + 16 >> 2];c[t + 20 >> 2] = c[b + 20 >> 2];c[t + 24 >> 2] = c[b + 24 >> 2];c[t + 28 >> 2] = c[b + 28 >> 2];
-                    if (j | 0) {
-                        i = s + 16 | 0;
-                        h = 0;
-                        do {
-                            s = n;
-                            c[s >> 2] = h;
-                            c[s + 4 >> 2] = 0;
-                            s = i;
-                            c[s >> 2] = 0;
-                            c[s + 4 >> 2] = 0;
-                            s = m;
-                            c[s >> 2] = 0;
-                            c[s + 4 >> 2] = -16777216;
-                            c[f >> 2] = 0;
-                            Ta(k, n, 1, 8);
-                            s = j - h | 0;
-                            Db(g + h | 0, b | 0, (s >>> 0 < 32 ? s : 32) | 0) | 0;
-                            c[b >> 2] = c[t >> 2];
-                            c[b + 4 >> 2] = c[t + 4 >> 2];
-                            c[b + 8 >> 2] = c[t + 8 >> 2];
-                            c[b + 12 >> 2] = c[t + 12 >> 2];
-                            c[b + 16 >> 2] = c[t + 16 >> 2];
-                            c[b + 20 >> 2] = c[t + 20 >> 2];
-                            c[b + 24 >> 2] = c[t + 24 >> 2];
-                            c[b + 28 >> 2] = c[t + 28 >> 2];
-                            h = h + 32 | 0
-                        } while (j >>> 0 > h >>> 0)
-                    }
-                    l = u;
-                    return e | 0
-                }
-            case 0:
-                {
-                    f = s + 8 | 0;n = s + 24 | 0;r = n;h = c[r + 4 >> 2] | -2147483648;o = n;c[o >> 2] = c[r >> 2];c[o + 4 >> 2] = h;o = s + 12 | 0;h = c[o >> 2] | 0;
-                    if (h >>> 0 < 128) xb(s + 160 + h | 0, 0, 128 - h | 0) | 0;p = s + 160 | 0;Sa(f, p, 1, h);k = ((c[f >> 2] | 0) + 7 | 0) >>> 3;q = p;r = q + 128 | 0;do {
-                        c[q >> 2] = 0;
-                        q = q + 4 | 0
-                    } while ((q | 0) < (r | 0));m = s + 32 | 0;q = t;h = m;r = q + 128 | 0;do {
-                        c[q >> 2] = c[h >> 2];
-                        q = q + 4 | 0;
-                        h = h + 4 | 0
-                    } while ((q | 0) < (r | 0));
-                    if (k | 0) {
-                        j = s + 16 | 0;
-                        b = (k + -1 | 0) >>> 7;
-                        i = 0;
-                        h = 0;
-                        while (1) {
-                            q = p;
-                            c[q >> 2] = i;
-                            c[q + 4 >> 2] = 0;
-                            q = j;
-                            c[q >> 2] = 0;
-                            c[q + 4 >> 2] = 0;
-                            q = n;
-                            c[q >> 2] = 0;
-                            c[q + 4 >> 2] = -16777216;
-                            c[o >> 2] = 0;
-                            Sa(f, p, 1, 8);
-                            q = k - h | 0;
-                            Db(g + h | 0, m | 0, (q >>> 0 < 128 ? q : 128) | 0) | 0;
-                            q = m;
-                            h = t;
-                            r = q + 128 | 0;
+                case 1:
+                    {
+                        k = s + 8 | 0;m = s + 24 | 0;r = m;h = c[r + 4 >> 2] | -2147483648;f = m;c[f >> 2] = c[r >> 2];c[f + 4 >> 2] = h;f = s + 12 | 0;h = c[f >> 2] | 0;
+                        if (h >>> 0 < 32) xb(k + 56 + h | 0, 0, 32 - h | 0) | 0;n = s + 64 | 0;Ta(k, n, 1, h);j = ((c[k >> 2] | 0) + 7 | 0) >>> 3;c[n >> 2] = 0;c[n + 4 >> 2] = 0;c[n + 8 >> 2] = 0;c[n + 12 >> 2] = 0;c[n + 16 >> 2] = 0;c[n + 20 >> 2] = 0;c[n + 24 >> 2] = 0;c[n + 28 >> 2] = 0;b = s + 32 | 0;c[t >> 2] = c[b >> 2];c[t + 4 >> 2] = c[b + 4 >> 2];c[t + 8 >> 2] = c[b + 8 >> 2];c[t + 12 >> 2] = c[b + 12 >> 2];c[t + 16 >> 2] = c[b + 16 >> 2];c[t + 20 >> 2] = c[b + 20 >> 2];c[t + 24 >> 2] = c[b + 24 >> 2];c[t + 28 >> 2] = c[b + 28 >> 2];
+                        if (j | 0) {
+                            i = s + 16 | 0;
+                            h = 0;
                             do {
-                                c[q >> 2] = c[h >> 2];
-                                q = q + 4 | 0;
-                                h = h + 4 | 0
-                            } while ((q | 0) < (r | 0));
-                            h = i + 1 | 0;
-                            if ((i | 0) == (b | 0)) break;
-                            else {
-                                i = h;
-                                h = h << 7
+                                s = n;
+                                c[s >> 2] = h;
+                                c[s + 4 >> 2] = 0;
+                                s = i;
+                                c[s >> 2] = 0;
+                                c[s + 4 >> 2] = 0;
+                                s = m;
+                                c[s >> 2] = 0;
+                                c[s + 4 >> 2] = -16777216;
+                                c[f >> 2] = 0;
+                                Ta(k, n, 1, 8);
+                                s = j - h | 0;
+                                Db(g + h | 0, b | 0, (s >>> 0 < 32 ? s : 32) | 0) | 0;
+                                c[b >> 2] = c[t >> 2];
+                                c[b + 4 >> 2] = c[t + 4 >> 2];
+                                c[b + 8 >> 2] = c[t + 8 >> 2];
+                                c[b + 12 >> 2] = c[t + 12 >> 2];
+                                c[b + 16 >> 2] = c[t + 16 >> 2];
+                                c[b + 20 >> 2] = c[t + 20 >> 2];
+                                c[b + 24 >> 2] = c[t + 24 >> 2];
+                                c[b + 28 >> 2] = c[t + 28 >> 2];
+                                h = h + 32 | 0
+                            } while (j >>> 0 > h >>> 0)
+                        }
+                        l = u;
+                        return e | 0
+                    }
+                case 0:
+                    {
+                        f = s + 8 | 0;n = s + 24 | 0;r = n;h = c[r + 4 >> 2] | -2147483648;o = n;c[o >> 2] = c[r >> 2];c[o + 4 >> 2] = h;o = s + 12 | 0;h = c[o >> 2] | 0;
+                        if (h >>> 0 < 128) xb(s + 160 + h | 0, 0, 128 - h | 0) | 0;p = s + 160 | 0;Sa(f, p, 1, h);k = ((c[f >> 2] | 0) + 7 | 0) >>> 3;q = p;r = q + 128 | 0;do {
+                            c[q >> 2] = 0;
+                            q = q + 4 | 0
+                        } while ((q | 0) < (r | 0));m = s + 32 | 0;q = t;h = m;r = q + 128 | 0;do {
+                            c[q >> 2] = c[h >> 2];
+                            q = q + 4 | 0;
+                            h = h + 4 | 0
+                        } while ((q | 0) < (r | 0));
+                        if (k | 0) {
+                            j = s + 16 | 0;
+                            b = (k + -1 | 0) >>> 7;
+                            i = 0;
+                            h = 0;
+                            while (1) {
+                                q = p;
+                                c[q >> 2] = i;
+                                c[q + 4 >> 2] = 0;
+                                q = j;
+                                c[q >> 2] = 0;
+                                c[q + 4 >> 2] = 0;
+                                q = n;
+                                c[q >> 2] = 0;
+                                c[q + 4 >> 2] = -16777216;
+                                c[o >> 2] = 0;
+                                Sa(f, p, 1, 8);
+                                q = k - h | 0;
+                                Db(g + h | 0, m | 0, (q >>> 0 < 128 ? q : 128) | 0) | 0;
+                                q = m;
+                                h = t;
+                                r = q + 128 | 0;
+                                do {
+                                    c[q >> 2] = c[h >> 2];
+                                    q = q + 4 | 0;
+                                    h = h + 4 | 0
+                                } while ((q | 0) < (r | 0));
+                                h = i + 1 | 0;
+                                if ((i | 0) == (b | 0)) break;
+                                else {
+                                    i = h;
+                                    h = h << 7
+                                }
                             }
                         }
+                        l = u;
+                        return e | 0
                     }
-                    l = u;
-                    return e | 0
-                }
-            default:
-                {
-                    l = u;
-                    return e | 0
-                }
-        }
+                default:
+                    {
+                        l = u;
+                        return e | 0
+                    }
+            }
         return 0
     }
 
@@ -12175,7 +12173,7 @@ var asm = (function (global, env, buffer) {
             k = wb(Y | 0, W | 0, ga | 0, ha | 0) | 0;
             m = y;
             ub = wb(U | 0, S | 0, ia | 0, ja | 0) | 0;
-            tb = y;
+                tb = y;
             Q = wb(Q | 0, O | 0, ka | 0, la | 0) | 0;
             S = y;
             U = wb(M | 0, K | 0, ma | 0, na | 0) | 0;
@@ -12187,20 +12185,20 @@ var asm = (function (global, env, buffer) {
             $ = wb(A | 0, z | 0, sa | 0, ta | 0) | 0;
             z = y;
             B = wb(x | 0, w | 0, ua | 0, va | 0) | 0;
-            D = y;
+                D = y;
             F = wb(v | 0, u | 0, wa | 0, xa | 0) | 0;
             H = y;
             J = wb(t | 0, s | 0, ya | 0, za | 0) | 0;
-            L = y;
+                L = y;
             N = wb(r | 0, q | 0, Aa | 0, Ba | 0) | 0;
-            P = y;
+                P = y;
             X = wb(p | 0, o | 0, Ca | 0, Da | 0) | 0;
             R = wb(X | 0, y | 0, T | 0, R | 0) | 0;
             T = y;
             X = wb(n | 0, j | 0, Ea | 0, Fa | 0) | 0;
             V = Na;
             V = wb(X | 0, y | 0, c[V >> 2] | 0, c[V + 4 >> 2] | 0) | 0;
-            X = y;
+                X = y;
             Z = wb(i | 0, h | 0, Ga | 0, Ha | 0) | 0;
             a = 1;
             h = Ab;
@@ -12217,7 +12215,7 @@ var asm = (function (global, env, buffer) {
             v = aa;
             w = da;
             x = $;
-            $ = y;
+                $ = y;
             do {
                 _ = wb(g | 0, h | 0, i | 0, j | 0) | 0;
                 Y = y;
@@ -14395,7 +14393,7 @@ var asm = (function (global, env, buffer) {
                     }
             }
             while (0);
-        b[c >> 1] = f | d;
+            b[c >> 1] = f | d;
         d = 0;
         return d | 0
     }
@@ -14735,39 +14733,39 @@ var asm = (function (global, env, buffer) {
                 else i = 0;
                 d = c[10200 + (i << 2) >> 2] | 0;
                 a: do
-                        if (!d) {
-                            d = 0;
-                            a = 0;
-                            v = 57
-                        } else {
-                            a = 0;
-                            h = k << ((i | 0) == 31 ? 0 : 25 - (i >>> 1) | 0);
-                            g = 0;
-                            while (1) {
-                                f = (c[d + 4 >> 2] & -8) - k | 0;
-                                if (f >>> 0 < e >>> 0)
-                                    if (!f) {
-                                        a = d;
-                                        e = 0;
-                                        f = d;
-                                        v = 61;
-                                        break a
-                                    } else {
-                                        a = d;
-                                        e = f
-                                    }
-                                f = c[d + 20 >> 2] | 0;
-                                d = c[d + 16 + (h >>> 31 << 2) >> 2] | 0;
-                                g = (f | 0) == 0 | (f | 0) == (d | 0) ? g : f;
-                                f = (d | 0) == 0;
-                                if (f) {
-                                    d = g;
-                                    v = 57;
-                                    break
-                                } else h = h << ((f ^ 1) & 1)
-                            }
+                    if (!d) {
+                        d = 0;
+                        a = 0;
+                        v = 57
+                    } else {
+                        a = 0;
+                        h = k << ((i | 0) == 31 ? 0 : 25 - (i >>> 1) | 0);
+                        g = 0;
+                        while (1) {
+                            f = (c[d + 4 >> 2] & -8) - k | 0;
+                            if (f >>> 0 < e >>> 0)
+                                if (!f) {
+                                    a = d;
+                                    e = 0;
+                                    f = d;
+                                    v = 61;
+                                    break a
+                                } else {
+                                    a = d;
+                                    e = f
+                                }
+                            f = c[d + 20 >> 2] | 0;
+                            d = c[d + 16 + (h >>> 31 << 2) >> 2] | 0;
+                            g = (f | 0) == 0 | (f | 0) == (d | 0) ? g : f;
+                            f = (d | 0) == 0;
+                            if (f) {
+                                d = g;
+                                v = 57;
+                                break
+                            } else h = h << ((f ^ 1) & 1)
                         }
-                    while (0);
+                    }
+                while (0);
                 if ((v | 0) == 57) {
                     if ((d | 0) == 0 & (a | 0) == 0) {
                         a = 2 << i;
@@ -15051,98 +15049,98 @@ var asm = (function (global, env, buffer) {
             return w | 0
         }
         b: do
-                if (!(c[2585] & 4)) {
-                    d = c[2480] | 0;
-                    c: do
-                        if (d) {
-                            e = 10344;
-                            while (1) {
-                                a = c[e >> 2] | 0;
-                                if (a >>> 0 <= d >>> 0 ? (r = e + 4 | 0, (a + (c[r >> 2] | 0) | 0) >>> 0 > d >>> 0) : 0) break;
-                                a = c[e + 8 >> 2] | 0;
-                                if (!a) {
-                                    v = 118;
-                                    break c
-                                } else e = a
-                            }
-                            b = g - h & f;
-                            if (b >>> 0 < 2147483647) {
-                                a = Cb(b | 0) | 0;
-                                if ((a | 0) == ((c[e >> 2] | 0) + (c[r >> 2] | 0) | 0)) {
-                                    if ((a | 0) != (-1 | 0)) {
-                                        h = b;
-                                        g = a;
-                                        v = 135;
-                                        break b
-                                    }
-                                } else {
-                                    e = a;
-                                    v = 126
-                                }
-                            } else b = 0
-                        } else v = 118; while (0);
-                    do
-                        if ((v | 0) == 118) {
-                            d = Cb(0) | 0;
-                            if ((d | 0) != (-1 | 0) ? (b = d, p = c[2593] | 0, q = p + -1 | 0, b = ((q & b | 0) == 0 ? 0 : (q + b & 0 - p) - b | 0) + k | 0, p = c[2582] | 0, q = b + p | 0, b >>> 0 > n >>> 0 & b >>> 0 < 2147483647) : 0) {
-                                r = c[2584] | 0;
-                                if (r | 0 ? q >>> 0 <= p >>> 0 | q >>> 0 > r >>> 0 : 0) {
-                                    b = 0;
-                                    break
-                                }
-                                a = Cb(b | 0) | 0;
-                                if ((a | 0) == (d | 0)) {
-                                    h = b;
-                                    g = d;
-                                    v = 135;
-                                    break b
-                                } else {
-                                    e = a;
-                                    v = 126
-                                }
-                            } else b = 0
+            if (!(c[2585] & 4)) {
+                d = c[2480] | 0;
+                c: do
+                    if (d) {
+                        e = 10344;
+                        while (1) {
+                            a = c[e >> 2] | 0;
+                            if (a >>> 0 <= d >>> 0 ? (r = e + 4 | 0, (a + (c[r >> 2] | 0) | 0) >>> 0 > d >>> 0) : 0) break;
+                            a = c[e + 8 >> 2] | 0;
+                            if (!a) {
+                                v = 118;
+                                break c
+                            } else e = a
                         }
-                    while (0);
-                    do
-                        if ((v | 0) == 126) {
-                            d = 0 - b | 0;
-                            if (!(i >>> 0 > b >>> 0 & (b >>> 0 < 2147483647 & (e | 0) != (-1 | 0))))
-                                if ((e | 0) == (-1 | 0)) {
-                                    b = 0;
-                                    break
-                                } else {
+                        b = g - h & f;
+                        if (b >>> 0 < 2147483647) {
+                            a = Cb(b | 0) | 0;
+                            if ((a | 0) == ((c[e >> 2] | 0) + (c[r >> 2] | 0) | 0)) {
+                                if ((a | 0) != (-1 | 0)) {
                                     h = b;
-                                    g = e;
+                                    g = a;
                                     v = 135;
                                     break b
                                 }
-                            a = c[2594] | 0;
-                            a = j - b + a & 0 - a;
-                            if (a >>> 0 >= 2147483647) {
+                            } else {
+                                e = a;
+                                v = 126
+                            }
+                        } else b = 0
+                    } else v = 118; while (0);
+                do
+                    if ((v | 0) == 118) {
+                        d = Cb(0) | 0;
+                        if ((d | 0) != (-1 | 0) ? (b = d, p = c[2593] | 0, q = p + -1 | 0, b = ((q & b | 0) == 0 ? 0 : (q + b & 0 - p) - b | 0) + k | 0, p = c[2582] | 0, q = b + p | 0, b >>> 0 > n >>> 0 & b >>> 0 < 2147483647) : 0) {
+                            r = c[2584] | 0;
+                            if (r | 0 ? q >>> 0 <= p >>> 0 | q >>> 0 > r >>> 0 : 0) {
+                                b = 0;
+                                break
+                            }
+                            a = Cb(b | 0) | 0;
+                            if ((a | 0) == (d | 0)) {
+                                h = b;
+                                g = d;
+                                v = 135;
+                                break b
+                            } else {
+                                e = a;
+                                v = 126
+                            }
+                        } else b = 0
+                    }
+                while (0);
+                do
+                    if ((v | 0) == 126) {
+                        d = 0 - b | 0;
+                        if (!(i >>> 0 > b >>> 0 & (b >>> 0 < 2147483647 & (e | 0) != (-1 | 0))))
+                            if ((e | 0) == (-1 | 0)) {
+                                b = 0;
+                                break
+                            } else {
                                 h = b;
                                 g = e;
                                 v = 135;
                                 break b
                             }
-                            if ((Cb(a | 0) | 0) == (-1 | 0)) {
-                                Cb(d | 0) | 0;
-                                b = 0;
-                                break
-                            } else {
-                                h = a + b | 0;
-                                g = e;
-                                v = 135;
-                                break b
-                            }
+                        a = c[2594] | 0;
+                        a = j - b + a & 0 - a;
+                        if (a >>> 0 >= 2147483647) {
+                            h = b;
+                            g = e;
+                            v = 135;
+                            break b
                         }
-                    while (0);
-                    c[2585] = c[2585] | 4;
-                    v = 133
-                } else {
-                    b = 0;
-                    v = 133
-                }
-            while (0);
+                        if ((Cb(a | 0) | 0) == (-1 | 0)) {
+                            Cb(d | 0) | 0;
+                            b = 0;
+                            break
+                        } else {
+                            h = a + b | 0;
+                            g = e;
+                            v = 135;
+                            break b
+                        }
+                    }
+                while (0);
+                c[2585] = c[2585] | 4;
+                v = 133
+            } else {
+                b = 0;
+                v = 133
+            }
+        while (0);
         if (((v | 0) == 133 ? k >>> 0 < 2147483647 : 0) ? (u = Cb(k | 0) | 0, r = Cb(0) | 0, s = r - u | 0, t = s >>> 0 > (n + 40 | 0) >>> 0, !((u | 0) == (-1 | 0) | t ^ 1 | u >>> 0 < r >>> 0 & ((u | 0) != (-1 | 0) & (r | 0) != (-1 | 0)) ^ 1)) : 0) {
             h = t ? s : b;
             g = u;
@@ -15219,82 +15217,82 @@ var asm = (function (global, env, buffer) {
                                     h = a & -8;
                                     e = a >>> 3;
                                     d: do
-                                            if (a >>> 0 < 256) {
-                                                a = c[b + 8 >> 2] | 0;
-                                                d = c[b + 12 >> 2] | 0;
-                                                if ((d | 0) == (a | 0)) {
-                                                    c[2474] = c[2474] & ~(1 << e);
-                                                    break
-                                                } else {
-                                                    c[a + 12 >> 2] = d;
-                                                    c[d + 8 >> 2] = a;
-                                                    break
-                                                }
+                                        if (a >>> 0 < 256) {
+                                            a = c[b + 8 >> 2] | 0;
+                                            d = c[b + 12 >> 2] | 0;
+                                            if ((d | 0) == (a | 0)) {
+                                                c[2474] = c[2474] & ~(1 << e);
+                                                break
                                             } else {
-                                                g = c[b + 24 >> 2] | 0;
-                                                a = c[b + 12 >> 2] | 0;
-                                                do
-                                                    if ((a | 0) == (b | 0)) {
-                                                        e = b + 16 | 0;
-                                                        d = e + 4 | 0;
-                                                        a = c[d >> 2] | 0;
-                                                        if (!a) {
-                                                            a = c[e >> 2] | 0;
-                                                            if (!a) {
-                                                                a = 0;
-                                                                break
-                                                            } else d = e
-                                                        }
-                                                        while (1) {
-                                                            e = a + 20 | 0;
-                                                            f = c[e >> 2] | 0;
-                                                            if (f | 0) {
-                                                                a = f;
-                                                                d = e;
-                                                                continue
-                                                            }
-                                                            e = a + 16 | 0;
-                                                            f = c[e >> 2] | 0;
-                                                            if (!f) break;
-                                                            else {
-                                                                a = f;
-                                                                d = e
-                                                            }
-                                                        }
-                                                        c[d >> 2] = 0
-                                                    } else {
-                                                        w = c[b + 8 >> 2] | 0;
-                                                        c[w + 12 >> 2] = a;
-                                                        c[a + 8 >> 2] = w
-                                                    }
-                                                while (0);
-                                                if (!g) break;
-                                                d = c[b + 28 >> 2] | 0;
-                                                e = 10200 + (d << 2) | 0;
-                                                do
-                                                    if ((b | 0) != (c[e >> 2] | 0)) {
-                                                        c[g + 16 + (((c[g + 16 >> 2] | 0) != (b | 0) & 1) << 2) >> 2] = a;
-                                                        if (!a) break d
-                                                    } else {
-                                                        c[e >> 2] = a;
-                                                        if (a | 0) break;
-                                                        c[2475] = c[2475] & ~(1 << d);
-                                                        break d
-                                                    }
-                                                while (0);
-                                                c[a + 24 >> 2] = g;
-                                                d = b + 16 | 0;
-                                                e = c[d >> 2] | 0;
-                                                if (e | 0) {
-                                                    c[a + 16 >> 2] = e;
-                                                    c[e + 24 >> 2] = a
-                                                }
-                                                d = c[d + 4 >> 2] | 0;
-                                                if (!d) break;
-                                                c[a + 20 >> 2] = d;
-                                                c[d + 24 >> 2] = a
+                                                c[a + 12 >> 2] = d;
+                                                c[d + 8 >> 2] = a;
+                                                break
                                             }
-                                        while (0);
+                                        } else {
+                                            g = c[b + 24 >> 2] | 0;
+                                            a = c[b + 12 >> 2] | 0;
+                                            do
+                                                if ((a | 0) == (b | 0)) {
+                                                    e = b + 16 | 0;
+                                                    d = e + 4 | 0;
+                                                    a = c[d >> 2] | 0;
+                                                    if (!a) {
+                                                        a = c[e >> 2] | 0;
+                                                        if (!a) {
+                                                            a = 0;
+                                                            break
+                                                        } else d = e
+                                                    }
+                                                    while (1) {
+                                                        e = a + 20 | 0;
+                                                        f = c[e >> 2] | 0;
+                                                        if (f | 0) {
+                                                            a = f;
+                                                            d = e;
+                                                            continue
+                                                        }
+                                                        e = a + 16 | 0;
+                                                        f = c[e >> 2] | 0;
+                                                        if (!f) break;
+                                                        else {
+                                                            a = f;
+                                                            d = e
+                                                        }
+                                                    }
+                                                    c[d >> 2] = 0
+                                                } else {
+                                                    w = c[b + 8 >> 2] | 0;
+                                                    c[w + 12 >> 2] = a;
+                                                    c[a + 8 >> 2] = w
+                                                }
+                                            while (0);
+                                            if (!g) break;
+                                            d = c[b + 28 >> 2] | 0;
+                                            e = 10200 + (d << 2) | 0;
+                                            do
+                                                if ((b | 0) != (c[e >> 2] | 0)) {
+                                                    c[g + 16 + (((c[g + 16 >> 2] | 0) != (b | 0) & 1) << 2) >> 2] = a;
+                                                    if (!a) break d
+                                                } else {
+                                                    c[e >> 2] = a;
+                                                    if (a | 0) break;
+                                                    c[2475] = c[2475] & ~(1 << d);
+                                                    break d
+                                                }
+                                            while (0);
+                                            c[a + 24 >> 2] = g;
+                                            d = b + 16 | 0;
+                                            e = c[d >> 2] | 0;
+                                            if (e | 0) {
+                                                c[a + 16 >> 2] = e;
+                                                c[e + 24 >> 2] = a
+                                            }
+                                            d = c[d + 4 >> 2] | 0;
+                                            if (!d) break;
+                                            c[a + 20 >> 2] = d;
+                                            c[d + 24 >> 2] = a
+                                }
+                                    while (0);
                                     b = b + h | 0;
                                     f = h + i | 0
                                 } else f = i;
