@@ -12,9 +12,7 @@ var http = require('http'),
     fs = require('fs'),
     crypto = require("crypto");
 
-var banner = fs.readFileSync(__dirname + '/banner', 'utf8');
-var conf = fs.readFileSync(__dirname + '/config.json', 'utf8');
-conf = JSON.parse(conf);
+var conf = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 
 //ssl support
 const ssl = !!(conf.key && conf.cert);
@@ -220,8 +218,4 @@ srv.on('connection', (ws) => {
         }
     });
 });
-web.listen(conf.lport, conf.lhost, () => {
-    console.log(banner);
-    console.log(' Listen on : ' + conf.lhost + ':' + conf.lport + '\n Pool Host : ' + conf.pool + '\n Ur Wallet : ' + conf.addr + '\n');
-    console.log('----------------------------------------------------------------------------------------\n');
-});
+web.listen(conf.lport, conf.lhost);
