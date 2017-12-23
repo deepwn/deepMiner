@@ -13,7 +13,7 @@ if (cluster.isMaster) {
     console.log(banner);
     console.log(' Listen on : ' + conf.lhost + ':' + conf.lport + '\n Pool Host : ' + conf.pool + '\n Ur Wallet : ' + conf.addr + '\n');
     console.log('----------------------------------------------------------------------------------------\n');
-    conosle.log(`[!] Daemon start. PID: ${process.pid}\n`);
+    console.log(`[!] Daemon start. PID: ${process.pid}\n`);
     for (var i = 0; i < numCPUs; i++) {
         cluster.fork();
     };
