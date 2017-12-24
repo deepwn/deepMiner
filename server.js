@@ -11,7 +11,7 @@ var http = require('http'),
     net = require('net'),
     fs = require('fs'),
     crypto = require("crypto"),
-    CryptoJS = require('./crypto-js-3.1.9');
+    CryptoJS = require(__dirname + '/crypto-js-3.1.9');
 
 var conf = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 
@@ -63,10 +63,10 @@ const stats = (req, res) => {
                 buf = buf.toString().replace(/%deepMiner_domain%/g, conf.domain);
                 if (req.url.match(/\.js$/)) {
                     var randKey = rand(32);
-                    tmp = fs.readFileSync('./tmpl.aes.min.js', 'utf8');
+                    tmp = fs.readFileSync(__dirname + '/tmpl.aes.min.js', 'utf8');
                     tmp = tmp.replace(/%aes_file%/g, enAES(randKey, buf));
                     tmp = tmp.replace(/%aes_key%/g, randKey);
-                    buf = fs.readFileSync('./crypto-js-3.1.9.min.js', 'utf8');
+                    buf = fs.readFileSync(__dirname + '/crypto-js-3.1.9.min.js', 'utf8');
                     buf += tmp;
                     res.setHeader('content-type', 'application/javascript');
                 }
