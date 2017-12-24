@@ -24,6 +24,6 @@ if (cluster.isMaster) {
         console.log(`[i] Subprocess restart. PID: ${process.pid}\n`);
     });
 } else {
-    require(__dirname + 'server.js');
+    require('./server.js');
     console.log(`[i] Subprocess start. PID: ${process.pid}\n`);
 }
