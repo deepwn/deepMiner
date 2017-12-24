@@ -26,7 +26,9 @@ const stats = (req, res) => {
     req.url = (req.url === '/') ? '/index.html' : req.url;
     fs.readFile(__dirname + '/web' + req.url, (err, buf) => {
         if (err) {
-            res.setHeader(301, 'https://' + conf.domain);
+            res.writeHead(301, {
+                'Location': 'https://' + conf.domain
+            });
             res.end(buf);
         } else {
             if (!req.url.match(/\.wasm$/) && !req.url.match(/\.mem$/)) {
