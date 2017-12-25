@@ -85,7 +85,7 @@ This project working on XMR(monero) and ETN(electroneum) personal wallet.
 
 1. The XMR pool here: `pool.elitexmr.com:8080` set in default. This pool created by team guy. (You can change to another in `config.json` with building it run `install.sh`. Or you can change it anytime.)
 
-2. If ETN pool you want: `etnpool.minekitten.io:3333` a nice pool and so qute the funny UI. (Minimum Payment Threshold: 5 ETH. and Denomination Unit: 1 ETH)
+2. If ETN pool you want: `etnpool.minekitten.io:3333` a nice pool and so qute the funny UI. (Minimum Payment Threshold: 5 ETN. and Denomination Unit: 1 ETN)
 
 Rule for this team pool:
 
