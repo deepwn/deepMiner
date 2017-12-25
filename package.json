@@ -3,13 +3,13 @@
   "version": "1.0.2",
   "description": "deepminer",
   "repository": "https://github.com/deepwn/deepMiner",
-  "main": "server.js",
+  "main": "cluster.js",
   "dependencies": {
     "ws": "^3.3.3"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node server.js"
+    "start": "node cluster.js"
   },
   "author": "evil7",
   "license": "MIT"
