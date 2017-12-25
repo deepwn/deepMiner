@@ -9,7 +9,7 @@
   MMMMP"`   """"YUMMM""""YUMMM YMMMb    MMM  M'  "MMMMMM  MMM     YM """"YUMMMMMMM   "W"
 
   deepMiner (idea from coinhive.js)
-  Worker for own Pool or personal XMR Wallet
+  Working on XMR(monero) and ETN(electroneum) personal wallet.
   By evil7@deePwn
 
 ----------------------------------------------------------------------------------------
