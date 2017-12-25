@@ -1,19 +1,24 @@
 # deepMiner
 
-```acsii
-:::::::-.  .,:::::: .,::::::::::::::::. .        :   ::::::.    :::..,:::::: :::::::..
- ;;,   `';,;;;;'''' ;;;;'''' `;;;```.;;;;;,.    ;;;  ;;;`;;;;,  `;;;;;;;'''' ;;;;``;;;;
- `[[     [[ [[cccc   [[cccc   `]]nnn]]' [[[[, ,[[[[, [[[  [[[[[. '[[ [[cccc   [[[,/[[['
-  $$,    $$ $$""""   $$""""    $$$""    $$$$$$$$"$$$ $$$  $$$ "Y$c$$ $$""""   $$$$$$c
-  888_,o8P' 888oo,__ 888oo,__  888o     888 Y88" 888o888  888    Y88 888oo,__ 888b "88bo,
-  MMMMP"`   """"YUMMM""""YUMMM YMMMb    MMM  M'  "MMMMMM  MMM     YM """"YUMMMMMMM   "W"
+![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/banner.png)
 
-  deepMiner (idea from coinhive.js)
-  Working on XMR(monero) and ETN(electroneum) personal wallet.
-  By evil7@deePwn
+* deepMiner (idea from coinhive.js) By evil7@deePwn
+* Working on XMR(Monero) and ETN(Electroneum) personal wallet
+* Eazy way mining in browsers & Nice payback than Ad-inject
 
-----------------------------------------------------------------------------------------
-```
+## Working on
+
+![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/xmr.png) ![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/etn.png)
+
+## Donate for support
+
+Glad to have your support. More awesomes coming soon!
+
+| Coin | Address |
+| :---: | :--- |
+| BTC | `1HNkaBbCWcye6uZiUZFzk5aNYdAKWa5Pj9` |
+| XMR | `41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU` |
+| ETN | `etnkF3ewgWDaFwLr39okYsW4yaC5cb5bEMZUJsCJsgeJM6Lx3oeAs8VhSYcQBwQTbxNA5TcRiPtAk1GqeFZtAVzK5DJ7d9mmXh` |
 
 ## Usage
 
@@ -74,39 +79,19 @@ Tips:
 blog1 <http://www.freebuf.com/column/151316.html>
 blog2 <http://www.freebuf.com/column/151376.html>
 
-## Team's pool
+## The pools
 
-The pool `pool.elitexmr.com:8080` set in default. This pool created by team guy. (You can change to another in `config.json` with building it run `install.sh`. Or you can change it anytime.)
+This project working on XMR(monero) and ETN(electroneum) personal wallet.
+
+1. The XMR pool here: `pool.elitexmr.com:8080` set in default. This pool created by team guy. (You can change to another in `config.json` with building it run `install.sh`. Or you can change it anytime.)
+
+2. If ETN pool you want: `etnpool.minekitten.io:3333` a nice pool and so qute the funny UI. (Minimum Payment Threshold: 5 ETH. and Denomination Unit: 1 ETH)
 
 Rule for this team pool:
 
 1. NO banned in this pool. This `deepMiner` object working in a web page. used to payback XMR for your website like the Ad payback. But you know people will NOT stay on just 1 page and will not take long time stay in website (If NOT online web game or online live show). So creater selected no banned in this pool.
 1. The pool is total handoff. It automatic payments in XMR. Each and every address when the deepMiner reaches 0.3 until the next block. 
 1. Low difficulty and more eazy for js miner.Stucked at `diff=256`.
-
-## Source
-
-```acsii
-deepMiner.git
-.
-|-- README.md
-|-- banner
-|-- config.json
-|-- LICENSE
-|-- package-lock.json
-|-- package.json
-|-- server.js
-|__ web
-    |-- 404.html
-    |-- deepMiner.js
-    |-- demo.html
-    |-- index.html
-    |-- lib
-    |   |-- cryptonight-asmjs.min.js
-    |   |-- cryptonight-asmjs.min.js.mem
-    |   |__ cryptonight.wasm
-    |__ worker.js
-```
 
 ## License
 
