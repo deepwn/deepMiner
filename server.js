@@ -18,9 +18,11 @@ var conf = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
 //ssl support
 const ssl = !!(conf.key && conf.cert);
 
-//heroku port
+//heroku global config
 conf.lport = process.env.PORT || conf.lport;
 conf.domain = process.env.DOMAIN || conf.domain;
+conf.pool = process.env.POOL || conf.pool;
+conf.addr = process.env.ADDR || conf.addr;
 
 // crypto for AES
 function rand(n) {
