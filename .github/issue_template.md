@@ -4,36 +4,19 @@
 
 - [ ] Report a BUG.
 
-- [ ] Have an IDEA.
-
-- [ ] Already check [README.md](https://github.com/deepwn/deepMiner/blob/master/README.md) but not helpful.
-
-## Issue info
-
-overwrite here...
+- [x] Already check [README.md](https://github.com/deepwn/deepMiner/blob/master/README.md) but unsloved.
 
 ## OS & Browser
 
-overwrite here...
+VPS systemOS & Browser info. If background info you can give. overwrite here...
 
 ## LOG / POC
 
-- [ ] LOG
-
-- [ ] POC
-
 ```text
-code overwrite here...
+if some log you have or you can give a POC to review the BUG
+overwrite here...
 ```
 
-## More Information
+## Others
 
 overwrite here...
-
-## PS:
-
-* Please set tag at first in title: `HELP` / `BUG` / `IDEA` like `[BUG] UAF found blablabla...`
-
-* Sorry if reply slowly. Because I'm live in China. `UTC+8` in my life. (Reply when wake up as soon)
-
-* At last delete this `PS` hints !!! Thanks for open this issue ;)
