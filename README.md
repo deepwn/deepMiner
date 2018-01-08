@@ -6,11 +6,16 @@
 * Working on XMR(Monero) and ETN(Electroneum) personal wallet
 * Eazy way mining in browsers & Nice payback than Ad-inject
 
-## Working on
+## Support on
 
-![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/xmr.png) ![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/etn.png)
+![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/xmr.png) ![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/etn.png)![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/sumokoin.png)
 
-## Donate for support
+* And All coins who follow `cryptoNight` && pool connect in `JSONRPC2`
+* Some coins used cryptoNote <https://cryptonote.org/coins/> (example: Monero / Electroneum /Sumokoin / Aeon ...)
+* The whitebook: `cryptoNight.txt` and `cryptoNight.md`. Come from: <https://cryptonote.org/standards/>
+* Technology: <https://cryptonote.org/inside/>
+
+## Donate (if you like this project <3)
 
 Glad to have your support. More awesomes coming soon!
 
