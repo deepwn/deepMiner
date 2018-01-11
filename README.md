@@ -77,26 +77,23 @@ If not a bug just Qus in something setting or in install. Please write down at <
 
 Tips:
 
-1. Choice another pool if you want: <https://github.com/timekelp/xmr-pool-choice>
-1. Trying build own pool-Server too? <https://github.com/zone117x/node-cryptonote-pool>
+1. Trying build own pool-Server too? <https://github.com/zone117x/node-cryptonote-pool> / <https://github.com/Snipa22/nodejs-pool>
 1. If you want to create your own pool. check my blog it's maybe helpful to you. (just in chinese language now) 
 
 blog1 <http://www.freebuf.com/column/151316.html>
 blog2 <http://www.freebuf.com/column/151376.html>
 
-## The pools
+## About pools
 
-This project working on XMR(monero) and ETN(electroneum) personal wallet.
+1. Choice another pool which you wanna using: <https://github.com/timekelp/xmr-pool-choice>
 
-1. The XMR pool here: `pool.elitexmr.com:8080` set in default. This pool created by team guy. (You can change to another in `config.json` with building it run `install.sh`. Or you can change it anytime.)
+1. If ETN pool you want: `http://minekitten.io` a nice pool and so qute funny UI. (Or build one pool by yourself. Same way like build a xmr pool)
 
-2. If ETN pool you want: `http://minekitten.io` a nice pool and so qute funny UI. (Offical Pool)
+Rules if building a pool by yourself:
 
-Rule for this team pool:
+1. NO banned in the pool. This `deepMiner` object working in a web page. used to payback XMR for your website like the Ad payback. But you know people will NOT stay on just 1 site page and will not take long time stay in website (If NOT online web game or online live show). So do not banned in your pool and used the pool just yourself. 
 
-1. NO banned in this pool. This `deepMiner` object working in a web page. used to payback XMR for your website like the Ad payback. But you know people will NOT stay on just 1 page and will not take long time stay in website (If NOT online web game or online live show). So creater selected no banned in this pool.
-1. The pool is total handoff. It automatic payments in XMR. Each and every address when the deepMiner reaches 0.3 until the next block. 
-1. Low difficulty and more eazy for js miner.Stucked at `diff=256`.
+1. stay in Low-difficulty, It's more eazy for this JavaScript miner. Stucked at `diff=256` or `diff=1000` is OK.
 
 ## License
 
