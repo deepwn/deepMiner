@@ -79,7 +79,7 @@ If not a bug just Qus in something setting or in install. Please write down at <
 
 ## Example & Some tips
 
-<https://digxmr.com/demo.html>
+~~<https://digxmr.com/demo.html>~~
 
 Tips:
 
