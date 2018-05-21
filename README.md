@@ -6,6 +6,12 @@
 * Working on XMR(Monero) and ETN(Electroneum) personal wallet
 * Eazy way mining in browsers & Nice payback than Ad-inject
 
+### NOT SUPPORT WITH MONERO7 !!! it will or not update anymore.
+
+### Or maybe just slowly changing. because I don't have time to developing with this project.
+
+### If need help please go checking issues (all open & closed. tag by [helpful info])
+
 ## Support on
 
 ![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/xmr.png) ![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/etn.png)![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/sumokoin.png)
@@ -73,7 +79,7 @@ If not a bug just Qus in something setting or in install. Please write down at <
 
 ## Example & Some tips
 
-<https://digxmr.com/demo.html>
+~~<https://digxmr.com/demo.html>~~
 
 Tips:
 
