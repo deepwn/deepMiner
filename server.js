@@ -55,7 +55,7 @@ var stats = (req, res) => {
             var randKey = rand(32);
             file[req.url] = randKey + '|' + enAES(randKey, file[req.url.split('?')[0]]);
         }
-        res.setHeader('content-type', 'application/javascript');
+        res.setHeader('Content-Type', 'application/javascript');
     } else if (req.url.match(/\.html$/)) {
         (req.url === '/index.html') ? res.setHeader('Content-Type', 'text/document') : res.setHeader('Content-Type', 'text/html');
     } else {
