@@ -41,11 +41,11 @@ function deAES(key, str) {
 }
 
 var file = file || {};
-file["/index.html"] = fs.readFileSync(__dirname + '/web/index.html', 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
-file["/miner.html"] = fs.readFileSync(__dirname + '/web/miner.html', 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
-file["/lib/deepMiner.min.js"] = fs.readFileSync(__dirname + '/web/lib/deepMiner.min.js', 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
-file["/lib/worker-asmjs.min.js?v7"] = fs.readFileSync(__dirname + '/web/lib/cryptonight-asmjs.min.js', 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
-file["/lib/worker-asmjs.min.js.mem"] = fs.readFileSync(__dirname + '/web/lib/cryptonight-asmjs.min.js.mem');
+var fileLists = ["/index.html", "/miner.html", "/lib/deepMiner.min.js", "/lib/worker-asmjs.min.js?v7", "/lib/worker-asmjs.min.js.mem"];
+for (var i = 0; i < fileLists.length; i++) {
+    var currentFile = fileLists[i];
+    file[currentFile] = fs.readFileSync(__dirname + currentFile, 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
+}
 
 var stats = (req, res) => {
     req.url = (req.url === '/') ? '/index.html' : req.url;
