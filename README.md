@@ -76,7 +76,7 @@ options : threads / throttle / forceASMJS
 E.g.:
 
 ```
-var miner = new deepMiner.Init(document.location, {
+var miner = new deepMiner.Init(document.location.host, {
     autoThreads: true
 });
 miner.start();
