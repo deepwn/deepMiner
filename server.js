@@ -81,41 +81,39 @@ function ws2pool(conn, data) {
     var buf;
     data = JSON.parse(data);
     switch (data.type) {
-        case "auth":
-            {
-                conn.uid = data.params.userID || "Anonymous";
-                buf = {
-                    method: "login",
-                    params: {
-                        login: conf.addr,
-                        pass: conf.pass,
-                        rigid: "",
-                        agent: "deepMiner"
-                    },
-                    id: conn.pid
-                };
-                buf = JSON.stringify(buf) + "\n";
-                conn.pl.write(buf);
-                console.log(buf + "\n");
-                break;
-            }
-        case "submit":
-            {
-                conn.found++;
-                buf = {
-                    method: "submit",
-                    params: {
-                        id: conn.workerId,
-                        job_id: data.params.job_id,
-                        nonce: data.params.nonce,
-                        result: data.params.result
-                    },
-                    id: conn.pid
-                };
-                buf = JSON.stringify(buf) + "\n";
-                conn.pl.write(buf);
-                break;
-            }
+        case "auth": {
+            conn.uid = data.params.userID || "Anonymous";
+            buf = {
+                method: "login",
+                params: {
+                    login: conf.addr,
+                    pass: conf.pass,
+                    rigid: "",
+                    agent: "deepMiner"
+                },
+                id: conn.pid
+            };
+            buf = JSON.stringify(buf) + "\n";
+            conn.pl.write(buf);
+            console.log(buf + "\n");
+            break;
+        }
+        case "submit": {
+            conn.found++;
+            buf = {
+                method: "submit",
+                params: {
+                    id: conn.workerId,
+                    job_id: data.params.job_id,
+                    nonce: data.params.nonce,
+                    result: data.params.result
+                },
+                id: conn.pid
+            };
+            buf = JSON.stringify(buf) + "\n";
+            conn.pl.write(buf);
+            break;
+        }
     }
 }
 // Trans PoolSocket to WebSocket
@@ -184,6 +182,17 @@ function pool2ws(conn, data) {
     }
 }
 
+// get IP
+function getClientIp(req) {
+    return (
+        req.headers["x-forwarded-for"] ||
+        req.headers["X-Real-IP"] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress
+    );
+}
+
 // Miner Proxy Srv
 var srv = new WebSocket.Server({
     server: web,
@@ -194,7 +203,7 @@ srv.on("connection", (ws, req) => {
     var conn = {
         uid: null,
         pid: rand(16).toString("hex"),
-        uip: req.connection.remoteAddress,
+        uip: getClientIp(req),
         workerId: null,
         found: 0,
         accepted: 0,
@@ -202,7 +211,10 @@ srv.on("connection", (ws, req) => {
         pl: new net.Socket()
     };
     var pool = conf.pool.split(":");
-    conn.pl.connect(pool[1], pool[0]);
+    conn.pl.connect(
+        pool[1],
+        pool[0]
+    );
     conn.ws.on("message", data => {
         ws2pool(conn, data);
         console.log("[>] Request: " + conn.uid + " ( " + conn.uip + " )" + "\n\n" + data + "\n");
@@ -215,7 +227,7 @@ srv.on("connection", (ws, req) => {
         console.log("[!] " + conn.uid + " ( " + conn.uip + " )" + " offline.\n");
         conn.pl.destroy();
     });
-    conn.pl.on("data", function (data) {
+    conn.pl.on("data", function(data) {
         var linesdata = data;
         var lines = String(linesdata).split("\n");
         if (lines[1].length > 0) {

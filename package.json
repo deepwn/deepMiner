@@ -10,8 +10,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node server.js",
-    "clust": "node cluster.js"
+    "test": "node server.js",
+    "start": "node cluster.js"
   },
   "author": "evil7",
   "license": "MIT"
