@@ -3,9 +3,6 @@ read -p "[2] Your Domain (localhost) > " domain
 read -p "[3] Pool Host&Port (pool.supportxmr.com:3333) > " pool
 read -p "[4] Your XMR wallet (important!!!) > " addr
 
-cat ./web/lib/cryptonight.js | sed -e '/^$/d' >./web/lib/worker.min.js
-cat ./web/lib/worker_tpl.min.js >>./web/lib/worker.min.js
-
 if [ ! -n "$lport" ]; then
 	lport="7777"
 fi
@@ -26,6 +23,8 @@ cd /srv
 rm -rf deepMiner
 git clone https://github.com/deepwn/deepMiner.git -o deepMiner
 cd deepMiner
+cat ./web/lib/cryptonight.js | sed -e '/^$/d' >./web/lib/worker.min.js
+cat ./web/lib/worker_tpl.min.js >>./web/lib/worker.min.js
 sed -i "s/7777/$lport/g" config.json
 sed -i "s/deepool.net/$domain/g" config.json
 sed -i "s/pool.supportxmr.com:3333/$pool/g" config.json
