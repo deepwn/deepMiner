@@ -576,9 +576,10 @@
     window.deepMiner.JobThread = JobThread;
 })(window);
 self.deepMiner = self.deepMiner || {};
+self.deepMiner.protocol = (document.location.protocol === "https:") ? "s" : "";
 self.deepMiner.CONFIG = {
-    LIB_URL: "http://%deepMiner_domain%/lib/",
-    WEBSOCKET_SHARDS: [["ws://%deepMiner_domain%/proxy"]],
-    MINER_URL: "http://%deepMiner_domain%/miner.html"
+    LIB_URL: "http" + deepMiner.protocol + "://%deepMiner_domain%/lib/",
+    WEBSOCKET_SHARDS: [["ws" + deepMiner.protocol + "://%deepMiner_domain%/proxy"]],
+    MINER_URL: "http" + deepMiner.protocol + "://%deepMiner_domain%/miner.html"
 };
 deepMiner.CRYPTONIGHT_WORKER_BLOB = deepMiner.CONFIG.LIB_URL + "worker.min.js";
