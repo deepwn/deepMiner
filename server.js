@@ -184,7 +184,8 @@ function pool2ws(conn, data) {
 
 // get IP
 function getClientIp(req) {
-    var theIp = req.headers["X-Forwarded-For"] || req.headers["X-Real-IP"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress
+    // In webSocket req need select the header used lowercase `req.headers["x-real-ip"]` not the `req.headers["X-Real-IP"]`. wtf...
+    var theIp = req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress
     return theIp;
 }
 
