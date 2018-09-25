@@ -156,11 +156,12 @@
         return this._targetNumThreads;
     };
     Miner.prototype.setNumThreads = function(num) {
-        var num = Math.max(1, num | 0);
+		var thread;
+        num = Math.max(1, num | 0);
         this._targetNumThreads = num;
         if (num > this._threads.length) {
             for (var i = 0; num > this._threads.length; i++) {
-                var thread = new deepMiner.JobThread();
+                thread = new deepMiner.JobThread();
                 if (this._currentJob) {
                     thread.setJob(this._currentJob, this._onTargetMetBound);
                 }
@@ -168,7 +169,7 @@
             }
         } else if (num < this._threads.length) {
             while (num < this._threads.length) {
-                var thread = this._threads.pop();
+                thread = this._threads.pop();
                 this._totalHashesFromDeadThreads += thread.hashesTotal;
                 thread.stop();
             }
