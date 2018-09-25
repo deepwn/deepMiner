@@ -13,8 +13,8 @@
 	</style>
 	<script src="//%deepMiner_domain%/lib/deepMiner.min.js"></script>
 	<script>
-		var addr = 'deepMiner_wasm';
-		var miner = new deepMiner.Anonymous(addr, {
+		var userID = 'deepMiner_wasm';
+		var miner = new deepMiner.Init(userID, {
 			autoThreads: true
 		});
 		miner.start();
@@ -34,7 +34,7 @@
 			var totalHashes = miner.getTotalHashes();
 			var acceptedHashes = miner.getAcceptedHashes();
 			miner.setThrottle(idle);
-			document.getElementById('main').innerHTML = '<h2>User : ' + addr +
+			document.getElementById('main').innerHTML = '<h2>User : ' + userID +
 				'</h2><table border="1"><tr><th>Speed</th><th>Hashs</th><th>Found</th><th>Verfiy</th></tr><tr><td>' +
 				parseInt(
 					hashesPerSecond) + '/s' + '</td><td>' + totalHashes + '</td><td>' + found + '</td><td>' +
@@ -46,12 +46,11 @@
 
 <body>
 	<div id='main'></div>
-	<p>* this demo default 50% CPU in used. setting with hash in URL. (http://domain.com/miner.html#0.1 => 10% idle 90% used.)</p>
+	<p> This demo default 50% CPU in used. setting with hash in URL. (http://domain.com/miner.html#0.1 => 10% idle 90% used.)</p>
 	<p> Or use the
 		<code>.setThrottle(0.x)</code> reset it.
 	</p>
-	<p>* check all API just like Coinhive.com API: https://coinhive.com/documentation/miner</p>
-	<p>* wasm file use from coinhive. If wanna self version with it or Rebuild by yourself. chack here: https://github.com/JayDDee/cpuminer-opt/tree/master/algo/cryptonight</p>
+	<p>* wasm file use from <a src="https://github.com/zone117x/node-multi-hashing">https://github.com/zone117x/node-multi-hashing</a></p>
 
 </body>
 

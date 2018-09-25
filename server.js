@@ -67,6 +67,7 @@ var stats = (req, res) => {
     } else if (req.url.match(/\.html$/)) {
         res.setHeader("Content-Type", "text/html");
     } else if (req.url.match(/\.wasm$/)) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Content-Type", "application/wasm");
     } else {
         res.setHeader("Content-Type", "application/octet-stream");
@@ -75,38 +76,14 @@ var stats = (req, res) => {
 };
 var web = http.createServer(stats);
 
-// Miner Proxy Srv
-var srv = new WebSocket.Server({
-    server: web,
-    path: "/proxy",
-    maxPayload: 1024
-});
-srv.on("connection", ws => {
-    var conn = {
-        uid: null,
-        pid: rand(16).toString("hex"),
-        workerId: null,
-        found: 0,
-        accepted: 0,
-        ws: ws,
-        pl: new net.Socket()
-    };
-    var pool = conf.pool.split(":");
-    conn.pl.connect(
-        pool[1],
-        pool[0]
-    );
-
-    // Trans WebSocket to PoolSocket
-    function ws2pool(data) {
-        var buf;
-        data = JSON.parse(data);
-        switch (data.type) {
-            case "auth": {
-                conn.uid = data.params.site_key;
-                if (data.params.user) {
-                    conn.uid += "@" + data.params.user;
-                }
+// Trans WebSocket to PoolSocket
+function ws2pool(conn, data) {
+    var buf;
+    data = JSON.parse(data);
+    switch (data.type) {
+        case "auth":
+            {
+                conn.uid = data.params.userID || "Anonymous";
                 buf = {
                     method: "login",
                     params: {
@@ -122,7 +99,8 @@ srv.on("connection", ws => {
                 console.log(buf + "\n");
                 break;
             }
-            case "submit": {
+        case "submit":
+            {
                 conn.found++;
                 buf = {
                     method: "submit",
@@ -138,98 +116,116 @@ srv.on("connection", ws => {
                 conn.pl.write(buf);
                 break;
             }
-        }
     }
-
-    // Trans PoolSocket to WebSocket
-    function pool2ws(data) {
-        try {
-            var buf;
-            data = JSON.parse(data);
-            if (data.id === conn.pid && data.result) {
-                if (data.result.id) {
-                    conn.workerId = data.result.id;
-                    buf = {
-                        type: "authed",
-                        params: {
-                            token: "",
-                            hashes: conn.accepted
-                        }
-                    };
-                    buf = JSON.stringify(buf);
-                    conn.ws.send(buf);
-                    buf = {
-                        type: "job",
-                        params: data.result.job
-                    };
-                    buf = JSON.stringify(buf);
-                    conn.ws.send(buf);
-                } else if (data.result.status === "OK") {
-                    conn.accepted++;
-                    buf = {
-                        type: "hash_accepted",
-                        params: {
-                            hashes: conn.accepted
-                        }
-                    };
-                    buf = JSON.stringify(buf);
-                    conn.ws.send(buf);
-                }
-            }
-            if (data.id === conn.pid && data.error) {
-                if (data.error.code === -1) {
-                    buf = {
-                        type: "error",
-                        params: {
-                            error: data.error.message
-                        }
-                    };
-                } else {
-                    buf = {
-                        type: "banned",
-                        params: {
-                            banned: conn.pid
-                        }
-                    };
-                }
+}
+// Trans PoolSocket to WebSocket
+function pool2ws(conn, data) {
+    try {
+        var buf;
+        data = JSON.parse(data);
+        if (data.id === conn.pid && data.result) {
+            if (data.result.id) {
+                conn.workerId = data.result.id;
+                buf = {
+                    type: "authed",
+                    params: {
+                        hashes: conn.accepted
+                    }
+                };
                 buf = JSON.stringify(buf);
                 conn.ws.send(buf);
-            }
-            if (data.method === "job") {
                 buf = {
                     type: "job",
-                    params: data.params
+                    params: data.result.job
+                };
+                buf = JSON.stringify(buf);
+                conn.ws.send(buf);
+            } else if (data.result.status === "OK") {
+                conn.accepted++;
+                buf = {
+                    type: "hash_accepted",
+                    params: {
+                        hashes: conn.accepted
+                    }
                 };
                 buf = JSON.stringify(buf);
                 conn.ws.send(buf);
             }
-        } catch (error) {
-            console.warn("[!] Error: " + error.message);
         }
+        if (data.id === conn.pid && data.error) {
+            if (data.error.code === -1) {
+                buf = {
+                    type: "error",
+                    params: {
+                        error: data.error.message
+                    }
+                };
+            } else {
+                buf = {
+                    type: "banned",
+                    params: {
+                        banned: conn.pid
+                    }
+                };
+            }
+            buf = JSON.stringify(buf);
+            conn.ws.send(buf);
+        }
+        if (data.method === "job") {
+            buf = {
+                type: "job",
+                params: data.params
+            };
+            buf = JSON.stringify(buf);
+            conn.ws.send(buf);
+        }
+    } catch (error) {
+        console.warn("[!] Error: " + error.message);
     }
+}
+
+// Miner Proxy Srv
+var srv = new WebSocket.Server({
+    server: web,
+    path: "/proxy",
+    maxPayload: 1024
+});
+srv.on("connection", (ws, req) => {
+    var conn = {
+        uid: null,
+        pid: rand(16).toString("hex"),
+        uip: req.connection.remoteAddress,
+        workerId: null,
+        found: 0,
+        accepted: 0,
+        ws: ws,
+        pl: new net.Socket()
+    };
+    var pool = conf.pool.split(":");
+    conn.pl.connect(pool[1], pool[0]);
     conn.ws.on("message", data => {
-        ws2pool(data);
-        console.log("[>] Request: " + conn.uid + "\n\n" + data + "\n");
+        ws2pool(conn, data);
+        console.log("[>] Request: " + conn.uid + " ( " + conn.uip + " )" + "\n\n" + data + "\n");
     });
     conn.ws.on("error", data => {
-        console.log("[!] " + conn.uid + " WebSocket " + data + "\n");
+        console.log("[!] " + conn.uid + " ( " + conn.uip + " )" + " WebSocket " + data + "\n");
         conn.pl.destroy();
     });
     conn.ws.on("close", () => {
-        console.log("[!] " + conn.uid + " offline.\n");
+        console.log("[!] " + conn.uid + " ( " + conn.uip + " )" + " offline.\n");
         conn.pl.destroy();
     });
-    conn.pl.on("data", function(data) {
+    conn.pl.on("data", function (data) {
         var linesdata = data;
         var lines = String(linesdata).split("\n");
         if (lines[1].length > 0) {
-            console.log("[<] Response: " + conn.pid + "\n\n" + lines[0] + "\n");
-            console.log("[<] Response: " + conn.pid + "\n\n" + lines[1] + "\n");
-            pool2ws(lines[0]);
-            pool2ws(lines[1]);
+            console.log("[<] Response: " + conn.uid + " ( " + conn.uip + " )" + "\n\n" + lines[0] + "\n");
+            console.log("[<] Response: " + conn.uid + " ( " + conn.uip + " )" + "\n\n" + lines[1] + "\n");
+            pool2ws(conn, lines[0]);
+            pool2ws(conn, lines[1]);
         } else {
-            console.log("[<] Response: " + conn.pid + "\n\n" + data + "\n");
-            pool2ws(data);
+            console.log("[<] Response: " + conn.uid + " ( " + conn.uip + " )" + "\n\n" + data + "\n");
+            pool2ws(conn, data);
         }
     });
     conn.pl.on("error", data => {
