@@ -1,8 +1,11 @@
 {
   "name": "deepminer",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "deepminer",
-  "repository": "https://github.com/deepwn/deepMiner",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepwn/deepMiner.git"
+  },
   "main": "cluster.js",
   "dependencies": {
     "crypto-js": "^3.1.9-1",
@@ -14,5 +17,22 @@
     "start": "node cluster.js"
   },
   "author": "evil7",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deepwn/deepMiner/issues"
+  },
+  "homepage": "https://github.com/deepwn/deepMiner#readme",
+  "keywords": [
+    "webminer",
+    "monero",
+    "cryptonight",
+    "v7",
+    "pool",
+    "javascript",
+    "emscripten",
+    "wasm",
+    "browser",
+    "miner",
+    "blockchain"
+  ]
 }
