@@ -182,5 +182,5 @@ MIT <https://raw.githubusercontent.com/deepwn/deepMiner/master/LICENSE>
 
 | Coin | Address |
 | :---: | :--- |
-| BTC | `1HNkaBbCWcye6uZiUZFzk5aNYdAKWa5Pj9` |
+| BTC | `17N3MVWefSXMkNRdiDpBbHpopG3k4JGWWs` |
 | XMR | `41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU` |
