@@ -1,5 +1,5 @@
 {
-    "lhost": "0.0.0.0",
+    "lhost": "127.0.0.1",
     "lport": 7777,
     "domain": "deepool.net",
     "pool": "pool.supportxmr.com:3333",

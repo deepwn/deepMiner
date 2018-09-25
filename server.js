@@ -184,13 +184,8 @@ function pool2ws(conn, data) {
 
 // get IP
 function getClientIp(req) {
-    return (
-        req.headers["x-forwarded-for"] ||
-        req.headers["X-Real-IP"] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress
-    );
+    var theIp = req.headers["X-Forwarded-For"] || req.headers["X-Real-IP"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress
+    return theIp;
 }
 
 // Miner Proxy Srv
@@ -227,7 +222,7 @@ srv.on("connection", (ws, req) => {
         console.log("[!] " + conn.uid + " ( " + conn.uip + " )" + " offline.\n");
         conn.pl.destroy();
     });
-    conn.pl.on("data", function(data) {
+    conn.pl.on("data", function (data) {
         var linesdata = data;
         var lines = String(linesdata).split("\n");
         if (lines[1].length > 0) {
