@@ -1,6 +1,6 @@
 # deepMiner
 
-![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/banner.png)
+![logo](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/banner.png)
 
 * deepMiner (idea like coinhive.js) By evil7@deePwn
 * Working on XMR(Monero) and ETN(Electroneum) personal wallet
@@ -8,7 +8,7 @@
 
 ## Support on
 
-![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/xmr.png) ![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/etn.png)![](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/sumokoin.png)
+![xmr](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/xmr.png) ![etn](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/etn.png)![skn](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/sumokoin.png)
 
 * And All coins who follow `cryptoNight` / `cryptoNight v7` && pool connect in `JSONRPC2`
 * Some coins used cryptoNote <https://cryptonote.org/coins/> (example: Monero / Electroneum /Sumokoin / Aeon ...)
@@ -46,7 +46,7 @@ OS pass: `ubuntu(debian)`
 
 You can use events in your page, to handling the HTML with mining status.
 
-```
+```javascript
 <script>
     // Listen on events
     miner.on('found', function() { /* Hash found */ })
@@ -67,6 +67,7 @@ You can use events in your page, to handling the HTML with mining status.
     }, 1000);
 </script>
 ```
+
 **new deepMiner.Init( [site, options] )**
 
 site : New a miner, that you can add a siteID / nameID or some string for Identify.
@@ -75,7 +76,7 @@ options : threads / throttle / forceASMJS
 
 E.g.:
 
-```
+```javascript
 var miner = new deepMiner.Init(document.location.host, {
     autoThreads: true
 });
@@ -88,7 +89,7 @@ mode: deepMiner.IF_EXCLUSIVE_TAB / deepMiner.FORCE_EXCLUSIVE_TAB / deepMiner.FOR
 
 E.g.:
 
-```
+```javascript
 miner.start(deepMiner.IF_EXCLUSIVE_TAB);
 ```
 
@@ -151,9 +152,9 @@ Specify a callback for an event.
 |found|A hash meeting the pool's was found and will be send to the pool.|
 |accepted|A hash that was sent to the pool was accepted.|
 
-## WASM building
+## WASM sources
 
-We can see it's updated for v7 now. All sources in folder `cryptonight-wasm`.
+We can see it's updated for v7 now. All sources in folder [cryptonight-wasm](https://github.com/deepwn/deepMiner/tree/master/cryptonight-wasm).
 
 You need install [Emscripten](https://github.com/kripken/emscripten) first, and run `./build.sh` to make this wasm file up.
 

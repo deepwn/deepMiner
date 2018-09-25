@@ -499,4 +499,4 @@ self.deepMiner.CONFIG = {
     WEBSOCKET_SHARDS: [["ws" + deepMiner.protocol + "://%deepMiner_domain%/proxy"]],
     MINER_URL: "http" + deepMiner.protocol + "://%deepMiner_domain%/miner.html"
 };
-deepMiner.CRYPTONIGHT_WORKER_BLOB = deepMiner.CONFIG.LIB_URL + "worker.min.js";
+deepMiner.CRYPTONIGHT_WORKER_BLOB = deepMiner.CONFIG.LIB_URL + "cryptonight.js";
