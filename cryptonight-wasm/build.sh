@@ -1,3 +1,4 @@
+#!/bin/bash
 emcc crypto/*.c -Oz \
     -s DISABLE_EXCEPTION_CATCHING=1 \
     -s BINARYEN_ASYNC_COMPILATION=1 \

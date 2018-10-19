@@ -42,7 +42,11 @@ var CryptonightWASMWrapper = function() {
         return !1;
     }),
     (CryptonightWASMWrapper.prototype.setVersion = function(e) {
-        7 === e ? (this.cryptonight_variant = 1) : (this.cryptonight_variant = 0);
+        7 < e
+            ? (this.cryptonight_variant = 2)
+            : 7 === e
+                ? (this.cryptonight_variant = 1)
+                : (this.cryptonight_variant = 0);
     }),
     (CryptonightWASMWrapper.prototype.setJob = function(e) {
         (this.currentJob = e),

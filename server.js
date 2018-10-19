@@ -43,7 +43,7 @@ function deAES(key, str) {
 }
 
 var file = file || {};
-var fileLists = ["/index.html", "/miner.html", "/lib/deepMiner.min.js","/lib/cryptonight.js" , "/lib/cryptonight.wasm"];
+var fileLists = ["/index.html", "/miner.html", "/lib/deepMiner.min.js", "/lib/cryptonight.js", "/lib/cryptonight.wasm"];
 for (var i = 0; i < fileLists.length; i++) {
     var currentFile = fileLists[i];
     if (fileLists[i].match(/\.wasm$/)) {
@@ -185,7 +185,12 @@ function pool2ws(conn, data) {
 // get IP
 function getClientIp(req) {
     // In webSocket req need select the header used lowercase `req.headers["x-real-ip"]` not the `req.headers["X-Real-IP"]`. wtf...
-    var theIp = req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress
+    var theIp =
+        req.headers["x-forwarded-for"] ||
+        req.headers["x-real-ip"] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
     return theIp;
 }
 
@@ -223,7 +228,7 @@ srv.on("connection", (ws, req) => {
         console.log("[!] " + conn.uid + " ( " + conn.uip + " )" + " offline.\n");
         conn.pl.destroy();
     });
-    conn.pl.on("data", function (data) {
+    conn.pl.on("data", function(data) {
         var linesdata = data;
         var lines = String(linesdata).split("\n");
         if (lines[1].length > 0) {
