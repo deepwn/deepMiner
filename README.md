@@ -21,12 +21,26 @@
 Add some javascript and write like this :
 
 ```html
-<script src="https://deepool.net/lib/deepMiner.min.js"></script>
+<script src="https://your_domain.com/lib/deepMiner.min.js"></script>
 <script>
-    var miner = new deepMiner.Init('Site_Name');
+    var miner = new deepMiner.Init('miner_name');
     miner.start();
 </script>
 ```
+## Testing notes
+
+As now say. we only can have 25H/s maybe in the browsers (i7-4GHz/16G-RAM) because the cryptonight R updated.
+
+And that's why people called "hardless to mining" in browsers.
+
+And it's why the Coinhive choose closed too.
+
+But by the way. If you can have 100USER/24H always online or running a online vedio website with 5k or 1M users and staying over 1h?
+
+Maybe you can get a nice payback more than 1$ every day. (25H/s/day/100Users = 1$ now).
+
+So as you see. you can just do learn JS something with this repo. Or do another develping with it. Or do build a fee system more than Ad injection.
+
 
 ## Development
 
@@ -38,11 +52,13 @@ all wasm source files in cryptonight-wasm
 
 server.js for srv side (webSocket<>tcpSocket)
 
+```text
 web/lib/
        |__ worker.js the worker to create hash job
        |__ deepMiner.js the main of all should add in web
        |   (used `npm i -g minify` and running `minify deepMiner.js > deepMiner.min.js` if min file you need) 
        |__ cryptonight.js/.wasm come from emcc building. if in dev you can checking and rebuilding from folder: cryptonight-wasm
+```
 
 ## Install
 
@@ -173,7 +189,7 @@ Specify a callback for an event.
 
 ## WASM sources
 
-We can see it's updated for v7 now. All sources in folder [cryptonight-wasm](https://github.com/deepwn/deepMiner/tree/master/cryptonight-wasm).
+All sources in folder [cryptonight-wasm](https://github.com/deepwn/deepMiner/tree/master/cryptonight-wasm).
 
 You need install [Emscripten](https://github.com/kripken/emscripten) first, and run `./build.sh` to make this wasm file up.
 
@@ -189,9 +205,11 @@ Don't forget backup your `config.json` at first.
 
 Some VPS's can't find pool's IP. change your VPS's DNS will work.
 
-SSL cert request default is `TRUE`. So use `certbot` or `acme.sh` to quick set.
+SSL cert request default is `TRUE`. So use `certbot` or `acme.sh` to quick request a free cert.
 
-Choice another pool which you wanna using: <https://github.com/timekelp/xmr-pool-choice>
+Or you can just running in devepment version without nginx using `cd FILE_PATH && npm start` or `forever start FILE_PATH/cluster.js`
+
+Choice another pool which you wanna using: <https://github.com/timekelp/xmr-pool-choice> or online website <http://www.moneropools.com/>
 
 ## License
 
