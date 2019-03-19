@@ -41,18 +41,22 @@ var CryptonightWASMWrapper = function() {
         }
         return !1;
     }),
-    (CryptonightWASMWrapper.prototype.setVersion = function(e) {
+    (CryptonightWASMWrapper.prototype.setVersion = function(e, h) {
         7 < e
             ? (this.cryptonight_variant = 2)
             : 7 === e
                 ? (this.cryptonight_variant = 1)
                 : (this.cryptonight_variant = 0);
+	if (h) {
+	    this.cryptonight_variant = 4;
+	    this.height = h;
+	}
     }),
     (CryptonightWASMWrapper.prototype.setJob = function(e) {
         (this.currentJob = e),
             (this.blob = this.hexToBytes(e.blob)),
             this.input.set(this.blob),
-            this.setVersion(this.blob[0]);
+            this.setVersion(this.blob[0], e.height);
         var t = this.hexToBytes(e.target);
         if (t.length <= 8) {
             for (var r = 0; r < t.length; r++) this.target[this.target.length - r - 1] = t[t.length - r - 1];
@@ -68,12 +72,12 @@ var CryptonightWASMWrapper = function() {
             (this.input[40] = (16711680 & n) >> 16),
             (this.input[41] = (65280 & n) >> 8),
             (this.input[42] = (255 & n) >> 0),
-            _cryptonight_hash(e.byteOffset, t.byteOffset, r, this.cryptonight_variant);
+            _cryptonight_hash(e.byteOffset, t.byteOffset, r, this.cryptonight_variant, this.height);
     }),
     (CryptonightWASMWrapper.prototype.verify = function(e) {
-        (this.blob = this.hexToBytes(e.blob)), this.input.set(this.blob), this.setVersion(this.blob[0]);
+        (this.blob = this.hexToBytes(e.blob)), this.input.set(this.blob), this.setVersion(this.blob[0], e.height);
         for (var t = 0, r = 0; r < e.nonce.length; r += 2, t++) this.input[39 + t] = parseInt(e.nonce.substr(r, 2), 16);
-        _cryptonight_hash(this.input.byteOffset, this.output.byteOffset, this.blob.length, this.cryptonight_variant);
+        _cryptonight_hash(this.input.byteOffset, this.output.byteOffset, this.blob.length, this.cryptonight_variant, this.height);
         var n = this.bytesToHex(this.output);
         self.postMessage({ verify_id: e.verify_id, verified: n === e.result, result: n });
     }),

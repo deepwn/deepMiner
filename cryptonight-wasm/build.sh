@@ -1,5 +1,5 @@
 #!/bin/bash
-emcc crypto/*.c -Oz \
+emcc *.c crypto/*.c -Oz \
     -s DISABLE_EXCEPTION_CATCHING=1 \
     -s BINARYEN_ASYNC_COMPILATION=1 \
     -s ALIASING_FUNCTION_POINTERS=1 \

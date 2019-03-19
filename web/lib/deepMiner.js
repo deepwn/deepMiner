@@ -176,10 +176,11 @@
                 }
                 var testJob = {
                     verify_id: "1",
-                    nonce: "d6220000",
-                    result: "d9e71cd5254c037f7c2086605ac0efce2d4931209acaab2a12b4ecd458140700",
+                    nonce: "210e0000",
+                    result: "710db2d067a2b34d62133d89235ea6fa2bb48f0f00df0b88f20e391c2dca0300",
                     blob:
-                        "0707d8fc9edd052719a45c5acda4401a7fac4ba02dfec5305b1307a824826e8025e83e76bcc1e400000000359f05eabd2ff0c616709c64d560640ba8657b034042ce593d5c2c008a093d6e06"
+                        "0b0bf2c3bce405a9a44fd6146cdc68e0f5783f7a1bec5b862e5979d21373d0936714a81cd9e6c800000000c0a9d1aff75492531f3e723589808f78981b3f0e505a6ed9354110c8751643f301",
+		    height: 1793177
                 };
                 this._verifyThread.verify(testJob, function(res) {
                     callback(res.verified === true, res);

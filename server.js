@@ -13,14 +13,6 @@ var http = require("http"),
 
 var conf = JSON.parse(fs.readFileSync(__dirname + "/config.json", "utf8"));
 
-//heroku global config
-conf.lport = process.env.PORT || conf.lport;
-conf.domain = process.env.DOMAIN || conf.domain;
-conf.pool = process.env.POOL || conf.pool;
-conf.addr = process.env.ADDR || conf.addr;
-conf.pass = process.env.PASS || conf.pass;
-conf.cryp = process.env.CRYP || conf.cryp;
-
 // crypto for AES
 function rand(n) {
     var chars = "01234567890ABCDEF";

@@ -5,12 +5,13 @@
 * deepMiner (idea like coinhive.js) By evil7@deePwn
 * Working on XMR(Monero) and ETN(Electroneum) personal wallet
 * Eazy way mining in browsers & Nice payback than Ad-inject
+* Goodbye Coinhive. You opened a new view for Web-Object + Blockchains.
 
-## Support on
+## Supports
 
 ![xmr](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/xmr.png) ![etn](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/etn.png)![skn](https://raw.githubusercontent.com/deepwn/deepMiner/master/.github/sumokoin.png)
 
-* And All coins who follow `cryptoNight` / `cryptoNight v7` && pool connect in `JSONRPC2`
+* And All coins who follow `cryptoNight` / `cryptoNight v7 & v8 / cryptoNight R` && pool connect in `JSONRPC2`
 * Some coins used cryptoNote <https://cryptonote.org/coins/> (example: Monero / Electroneum /Sumokoin / Aeon ...)
 * The whitebook: `cryptoNight.txt` and `cryptoNight.md`. Come from: <https://cryptonote.org/standards/>
 * Technology: <https://cryptonote.org/inside/>
@@ -27,6 +28,22 @@ Add some javascript and write like this :
 </script>
 ```
 
+## Development
+
+```bash
+cd deepMiner && npm install && npm start
+```
+
+all wasm source files in cryptonight-wasm
+
+server.js for srv side (webSocket<>tcpSocket)
+
+web/lib/
+       |__ worker.js the worker to create hash job
+       |__ deepMiner.js the main of all should add in web
+       |   (used `npm i -g minify` and running `minify deepMiner.js > deepMiner.min.js` if min file you need) 
+       |__ cryptonight.js/.wasm come from emcc building. if in dev you can checking and rebuilding from folder: cryptonight-wasm
+
 ## Install
 
 ```bash
@@ -38,11 +55,13 @@ lib request: `*nodejs` / `*npm` / `?nginx`
 
 useful pakages: `forever`
 
-ssl support: <https://certbot.eff.org/>
+ssl support: <https://certbot.eff.org/> / <https://acme.sh/>
 
-OS pass: `ubuntu(debian)`
+OS tested on: `ubuntu(debian)`
 
-## API Document
+## API Document (come from Coinhive and have some rebuild on it)
+
+* Not Support ASMJS in this master release
 
 You can use events in your page, to handling the HTML with mining status.
 
@@ -180,7 +199,6 @@ MIT <https://raw.githubusercontent.com/deepwn/deepMiner/master/LICENSE>
 
 ## Donate (Like this project <3)
 
-| Coin | Address |
-| :---: | :--- |
-| BTC | `17N3MVWefSXMkNRdiDpBbHpopG3k4JGWWs` |
-| XMR | `41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU` |
+(I will add a dev donate session in next version or in the manager web view)
+
+XMR `41ynfGBUDbGJYYzz2jgSPG5mHrHJL4iMXEKh9EX6RfEiM9JuqHP66vuS2tRjYehJ3eRSt7FfoTdeVBfbvZ7Tesu1LKxioRU`
