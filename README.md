@@ -107,7 +107,7 @@ You can use events in your page, to handling the HTML with mining status.
 
 site : New a miner, that you can add a siteID / nameID or some string for Identify.
 
-options : threads / throttle / forceASMJS
+options : threads / throttle
 
 E.g.:
 
