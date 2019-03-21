@@ -5,7 +5,8 @@ From <https://github.com/zone117x/node-multi-hashing>
 Bash script `build.sh` running with `emcc` from Emscripten.
 
 ```bash
-emcc crypto/*.c -Oz \
+#!/bin/bash
+emcc *.c crypto/*.c -Oz \
     -s DISABLE_EXCEPTION_CATCHING=1 \
     -s BINARYEN_ASYNC_COMPILATION=1 \
     -s ALIASING_FUNCTION_POINTERS=1 \
