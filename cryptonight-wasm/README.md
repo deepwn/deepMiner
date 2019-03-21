@@ -1,4 +1,4 @@
-# Cryptonight v7
+# Cryptonight-WASM
 
 From <https://github.com/zone117x/node-multi-hashing>
 
